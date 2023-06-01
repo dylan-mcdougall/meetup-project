@@ -284,7 +284,7 @@ Returns all the groups.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /user/:userId/groups
+  * URL: /users/:userId/groups
   * Body: none
 
 * Successful Response
@@ -741,7 +741,7 @@ Edit a new venue specified by its id
   the group with a status of "co-host"
 * Request
   * Method: PUT
-  * URL: /groups/:groupId/venues/:venueId
+  * URL: /venues/:venueId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1759,7 +1759,7 @@ Change the status of an attendance for an event specified by id.
   have a membership to the group with the status of "co-host"
 * Request
   * Method: PATCH
-  * URL: /events/:eventId/attendence/:memberId
+  * URL: /events/:eventId/attendence/:attendenceId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1831,7 +1831,7 @@ Delete an attendance to an event specified by id.
   the user whose attendance is being deleted
 * Request
   * Method: DELETE
-  * URL: /events/:eventId/attendence/:memberId
+  * URL: /events/:eventId/attendence/:attendenceId
   * Headers:
     * Content-Type: application/json
   * Body:
