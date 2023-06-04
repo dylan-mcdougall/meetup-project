@@ -33,7 +33,7 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      hashedpassword: {
+      hashedPassword: {
         type: Sequelize.STRING.BINARY,
         allowNull: false
       },
