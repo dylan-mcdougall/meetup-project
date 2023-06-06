@@ -39,12 +39,12 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATETIME,
         defaultValue: Sequelize.literal('CURRENT_DATETIME')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATETIME,
         defaultValue: Sequelize.literal('CURRENT_DATETIME')
       }
     }, options);
