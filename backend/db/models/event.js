@@ -30,11 +30,26 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    type: DataTypes.STRING,
-    capacity: DataTypes.INTEGER,
-    price: DataTypes.NUMERIC,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    capacity: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    price: {
+      type: DataTypes.NUMERIC,
+      allowNull: false
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Event',
