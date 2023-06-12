@@ -1,4 +1,10 @@
 'use strict';
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const {
   Model
 } = require('sequelize');
@@ -10,7 +16,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Event.belongsTo(
+        models.Group,
+        { through: 'Venues', foreignKey: 'groupId', otherKey: 'id' }
+      );
+      Event.belongsTo(
+        models.Venue,
+        { foreignKey: 'venueId', otherKey: 'id' }
+      )
     }
   }
   Event.init({

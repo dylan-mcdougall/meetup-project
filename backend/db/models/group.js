@@ -1,4 +1,10 @@
 'use strict';
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const {
   Model
 } = require('sequelize');
@@ -18,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         models.User,
         { through: 'Memberships', foreignKey: 'groupId', otherKey: 'id' }
       );
+      Group.hasMany(
+        models.Event,
+        { through: 'Venues', foreignKey: 'groupId', otherKey: 'id'}
+      )
     }
   }
   Group.init({
