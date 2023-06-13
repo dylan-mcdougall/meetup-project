@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       Event.belongsTo(
         models.Venue,
         { foreignKey: 'venueId', otherKey: 'id' }
+      );
+      Event.hasMany(
+        models.Image,
+        { foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Event' } } 
       )
     }
   }

@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       Group.hasMany(
         models.Event,
         { through: 'Venues', foreignKey: 'groupId', otherKey: 'id'}
+      );
+      Group.hasMany(
+        models.Image,
+        { foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Group' } }
       )
     }
   }
