@@ -21,14 +21,26 @@ module.exports = {
         price: 18.50,
         startDate: "2021-11-19 20:00:00",
         endDate: "2021-11-19 22:00:00"
+      },
+      {
+        groupId: 2,
+        venueId: 2,
+        name: 'Tea Time Innit',
+        description: "Our famous weekly gossip session",
+        type: 'In Person',
+        capacity: 3,
+        price: 10.00,
+        startDate: '2022-12-12 20:00:00',
+        endDate: '2022-12-12 21:00:00'
       }
     ])
   },
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Events';
+    const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      groupId: 1
+      groupId: { [Op.in]: [1, 2] }
     }, {});
   }
 };

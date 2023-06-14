@@ -9,32 +9,36 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    options.tableName = 'Venues';
+    options.tableName = 'Attendances';
     return queryInterface.bulkInsert(options, [
       {
-        groupId: 1,
-        address: '123 Disney Lane',
-        city: 'New York',
-        state: 'NY',
-        lat: '37.7645358',
-        lng: '-122.4730327'
+        userId: 1,
+        eventId: 1,
+        status: 'Attending'
       },
       {
-        groupId: 2,
-        address: '124 Didney Lane',
-        city: 'New York',
-        state: 'NY',
-        lat: '38.7645358',
-        lng: '-122.4730327'
+        userId: 3,
+        eventId: 1,
+        status: 'Attending'
+      },
+      {
+        userId: 2,
+        eventId: 2,
+        status: 'Attending'
+      },
+      {
+        userId: 3,
+        eventId: 2,
+        status: 'Pending'
       }
     ])
   },
 
   async down (queryInterface, Sequelize) {
-    options.tableName = 'Venues';
+    options.tableName = 'Attendances';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      groupId: { [Op.in]: [1, 2] }
-    }, {});
+      eventId: { [Op.in]: [1, 2] }
+    });
   }
 };

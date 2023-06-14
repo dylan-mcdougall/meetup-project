@@ -12,26 +12,26 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Image.belongsTo(
         models.Group,
-        { foreignKey: 'imageableId', constraints: false }
+        { as: 'imageable', foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Group' } }
       );
       Image.belongsTo(
         models.Event,
-        { foreignKey: 'imageableId', constraints: false }
+        { as: 'imageable', foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Event' } }
       );
     }
   }
   Image.init({
     imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING
     },
     preview: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+      type: DataTypes.BOOLEAN
     },
     imageableId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+      type: DataTypes.INTEGER
+    },
+    imageableType: {
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
