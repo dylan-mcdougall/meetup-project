@@ -12,25 +12,25 @@ module.exports = {
     options.tableName = 'Images';
     return queryInterface.bulkInsert(options, [
       {
-        imageUrl: 'demo Url',
+        url: 'demo Url',
         preview: true,
         imageableId: 1,
         imageableType: 'Event'
       },
       {
-        imageUrl: 'it me, demo',
+        url: 'it me, demo',
         preview: true,
         imageableId: 2,
         imageableType: 'Event'
       },
       {
-        imageUrl: 'Beep Boop',
+        url: 'Beep Boop',
         preview: true,
         imageableId: 1,
         imageableType: 'Group'
       },
       {
-        imageUrl: 'other url here',
+        url: 'other url here',
         preview: true,
         imageableId: 2,
         imageableType: 'Group'

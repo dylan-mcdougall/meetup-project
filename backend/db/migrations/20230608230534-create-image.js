@@ -15,7 +15,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      imageUrl: {
+      url: {
         type: Sequelize.STRING
       },
       preview: {
