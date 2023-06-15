@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       // );
       Event.hasMany(
         models.Image,
-        { foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Event' } } 
+        { foreignKey: 'imageableId', constraints: false, onDelete: 'CASCADE', scope: { imageableType: 'Event' } } 
       )
     }
   }

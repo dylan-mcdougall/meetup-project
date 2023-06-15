@@ -36,6 +36,67 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
     return res.json(payload);
 })
 
+router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
+    const currGroup = await Group.findByPk(req.params.groupId);
+
+    const user = await Membership.findOne({
+        where: { userId: req.user.id, groupId: req.params.groupId }
+    })
+
+    if (!currGroup) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+    if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+    const payload = await Venue.findAll({
+        where: { groupId: req.params.groupId },
+        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+    });
+
+    return res.json(payload);
+});
+
+router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
+    const { address, city, state, lat, lng } = req.body;
+
+    const currGroup = await Group.findByPk(req.params.groupId);
+
+    const user = await Membership.findOne({
+        where: { userId: req.user.id, groupId: req.params.groupId }
+    })
+
+    if (!currGroup) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+    if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    await Venue.create({
+        groupId: req.params.groupId,
+        address,
+        city,
+        state,
+        lat,
+        lng
+    });
+
+    const payload = await Venue.findOne({
+        where: { lat: lat, lng: lng }
+    });
+
+    res.json(payload);
+})
+
 router.put('/:groupId', requireAuth, async (req, res, next) => {
     let { name, about, type, private, city, state } = req.body;
 

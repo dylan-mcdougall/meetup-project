@@ -88,7 +88,7 @@ router.post(
     }
   );
 
-router.get('/', requireAuth, (req, res) => {
+router.get('/', (req, res) => {
     const { user } = req;
     if (user) {
       const safeUser = {

@@ -22,15 +22,15 @@ module.exports = (sequelize, DataTypes) => {
       );
       Group.belongsToMany(
         models.User,
-        { through: 'Membership', foreignKey: 'groupId', otherKey: 'id', onDelete: 'CASCADE' }
+        { through: 'Membership', foreignKey: 'groupId', otherKey: 'id' }
       );
       Group.belongsToMany(
         models.Event,
-        { through: models.Venue, foreignKey: 'groupId', onDelete: 'CASCADE' }
+        { through: models.Venue, foreignKey: 'groupId' }
       );
       Group.hasMany(
         models.Image,
-        { as: 'GroupImages', foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Group' } }
+        { as: 'GroupImages', foreignKey: 'imageableId', onDelete: 'CASCADE', constraints: false, scope: { imageableType: 'Group' } }
       );
       Group.hasMany(
         models.Venue,
