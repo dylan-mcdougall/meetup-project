@@ -18,8 +18,20 @@ module.exports = {
         imageableType: 'Event'
       },
       {
+        imageUrl: 'it me, demo',
+        preview: true,
+        imageableId: 2,
+        imageableType: 'Event'
+      },
+      {
+        imageUrl: 'Beep Boop',
+        preview: true,
+        imageableId: 1,
+        imageableType: 'Group'
+      },
+      {
         imageUrl: 'other url here',
-        preview: false,
+        preview: true,
         imageableId: 2,
         imageableType: 'Group'
       }
