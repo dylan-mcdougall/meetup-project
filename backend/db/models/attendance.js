@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Attendance.belongsTo(
         models.Event,
-        { foreignKey: 'eventId' }
+        { foreignKey: 'eventId', targetKey: 'id' }
       );
       Attendance.belongsTo(
         models.User,
