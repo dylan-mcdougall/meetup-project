@@ -2,9 +2,11 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('../../utils/auth');
 
-const { User, Event, Venue, Membership, Group, Image } = require('../../db/models');
+const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
 
 const router = express.Router();
+
+
 
 router.post('/:groupId/images', requireAuth, async (req, res, next) => {
     const { url, preview } = req.body;
@@ -34,7 +36,95 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
         attributes: ['id', 'url', 'preview']
     });
     return res.json(payload);
+});
+
+router.post('/:groupId/events', requireAuth, async (req, res, next) => {
+    const currGroup = await Group.findByPk(req.params.groupId);
+
+    const user = await Membership.findOne({
+        where: { userId: req.user.id, groupId: req.params.groupId }
+    })
+
+    if (!currGroup) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+    if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    await Event.create({
+        groupId: req.params.groupId,
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+    });
+
+    const payload = await Event.findOne({
+        where: { name: name, description: description, startDate: startDate, endDate: endDate },
+        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'capacity', 'price', 'description', 'startDate', 'endDate']
+    });
+
+    return res.json(payload);
 })
+
+router.get('/:groupId/events', async (req, res, next) => {
+    let group = await Group.findByPk(req.params.groupId);
+
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const events = await Event.findAll({
+        where: { groupId: req.params.groupId },
+        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate']
+    });
+
+    for (let i = 0; i < events.length; i++) {
+        console.log(events[i]);
+
+        const numAttending = await Attendance.findAll({
+                where: { eventId: events[i].id, status: 'Attending' }
+            });
+
+        events[i].dataValues.numAttending = numAttending.length;
+
+        const previewUrl = await Image.findOne({
+            where: { imageableId: events[i].id, imageableType: 'Event', preview: true }
+        });
+
+        events[i].dataValues.previewImage = previewUrl.url;
+
+        events[i].dataValues.Group = await Group.findOne({
+            where: { id: req.params.groupId },
+            attributes: ['id', 'name', 'city', 'state']
+        });
+
+        if (events[i].venueId === null) {
+            events[i].dataValues.Venue = null;
+        } else {
+            let venue = await Venue.findOne({ 
+                where: { id: events[i].venueId },
+                attributes: ['id', 'city', 'state'] 
+            });
+            events[i].dataValues.Venue = venue;
+        }
+    }
+
+    return res.json(events);
+});
 
 router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
     const currGroup = await Group.findByPk(req.params.groupId);
