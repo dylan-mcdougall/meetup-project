@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         models.Group,
         { through: 'Membership', foreignKey: 'userId', otherKey: 'id' }
       );
+      User.hasMany(
+        models.Attendance,
+        { foreignKey: 'userId', otherKey: 'id', onDelete: 'CASCADE' }
+      )
     }
   }
   User.init({
