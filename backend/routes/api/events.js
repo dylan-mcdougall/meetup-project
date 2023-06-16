@@ -6,6 +6,10 @@ const { User, Event, Venue, Membership, Group, Image, Attendance } = require('..
 
 const router = express.Router();
 
+router.get('/:eventId/attendance', async (req, res, next) => {
+    
+})
+
 router.post('/:eventId/images', requireAuth, async (req, res, next) => {
     const currEvent = await Event.findByPk(req.params.eventId);
 
