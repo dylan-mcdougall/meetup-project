@@ -19,13 +19,13 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: 'Users', key: 'id' }
+        references: { model: 'Users', key: 'id', onDelete: 'CASCADE' }
       },
       groupId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: 'Groups', key: 'id' }
+        references: { model: 'Groups', key: 'id', onDelete: 'CASCADE' }
       },
       status: {
         type: Sequelize.STRING,

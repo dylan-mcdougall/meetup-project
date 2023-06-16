@@ -1,0 +1,51 @@
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const { requireAuth } = require('../../utils/auth');
+
+const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
+
+const router = express.Router();
+
+router.put('/:venueId', requireAuth, async (req, res, next) => {
+    const { address, city, state, lat, lng } = req.body;
+
+    let currVenue = await Venue.findByPk(req.params.venueId);
+
+    const currGroup = await Group.findOne({
+        where: { id: currVenue.groupId }
+    });
+
+    const user = await Membership.findOne({
+        where: { userId: req.user.id, groupId: currGroup.id }
+    })
+
+    if (!currVenue) {
+        return res.status(404).json({
+            message: "Venue couldn't be found"
+        })
+    }
+    if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    await Venue.update({
+        address,
+        city,
+        state,
+        lat,
+        lng,
+    }, {
+        where: { id: req.params.venueId }
+    });
+
+    currVenue = await Venue.findOne({
+        where: { id: req.params.venueId },
+        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+    });
+
+    return res.json(currVenue);
+})
+
+module.exports = router;

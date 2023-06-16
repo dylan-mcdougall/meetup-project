@@ -15,7 +15,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      imageUrl: {
+      url: {
         type: Sequelize.STRING
       },
       preview: {
@@ -24,13 +24,18 @@ module.exports = {
       imageableId: {
         type: Sequelize.INTEGER
       },
+      imageableType: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
   },

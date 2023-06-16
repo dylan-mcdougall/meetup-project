@@ -18,19 +18,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Group.belongsTo(
         models.User,
-        { foreignKey: 'organizerId', otherKey: 'id' }
+        { as: 'Organizer', foreignKey: 'organizerId', otherKey: 'id' }
       );
       Group.belongsToMany(
         models.User,
-        { through: 'Memberships', foreignKey: 'groupId', otherKey: 'id' }
+        { through: 'Membership', foreignKey: 'groupId', otherKey: 'id' }
       );
       Group.belongsToMany(
         models.Event,
-        { through: 'Venues', foreignKey: 'groupId', otherKey: 'id'}
+        { through: models.Venue, foreignKey: 'groupId' }
       );
       Group.hasMany(
         models.Image,
-        { foreignKey: 'imageableId', constraints: false, scope: { imageableType: 'Group' } }
+        { as: 'GroupImages', foreignKey: 'imageableId', onDelete: 'CASCADE', constraints: false, scope: { imageableType: 'Group' } }
+      );
+      Group.hasMany(
+        models.Venue,
+        { foreignKey: 'groupId', onDelete: 'CASCADE' }
       )
     }
   }

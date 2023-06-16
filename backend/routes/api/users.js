@@ -1,11 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { Op } = require('sequelize');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User, Group, Membership, Image } = require('../../db/models');
+
 
 const router = express.Router();
 
@@ -28,6 +30,38 @@ const validateSignup = [
     .withMessage('Password must be 6 characters or more.'),
   handleValidationErrors
 ];
+
+router.get('/:usersId/groups', requireAuth, async (req, res, next) => {
+  let tempArr = [];
+  const list = await Membership.findAll({
+    where: { userId: req.params.usersId },
+    attributes: [
+      'groupId'
+    ]
+  });
+  
+  for (let i = 0; i < list.length; i++) {
+    tempArr.push(list[i].groupId);
+  }
+
+  const target = await Group.findAll({
+    where: { [Op.or]: { id: tempArr } }
+  })
+
+  for (let i = 0; i < target.length; i++) {
+    const numMembers = await Membership.findAll({
+      where: { groupId: target[i].id, status: 'Member' }
+    })
+    target[i].dataValues.numMembers = numMembers.length;
+    const preview = await Image.findOne({
+      where: { imageableId: target[i].id, preview: true, imageableType: 'Group' }
+    });
+    target[i].dataValues.preview = preview.imageUrl
+  }
+
+  console.log(target);
+  res.json(target);
+})
 
 // Sign up
 router.post(
@@ -53,5 +87,23 @@ router.post(
       });
     }
   );
+
+router.get('/', (req, res) => {
+    const { user } = req;
+    if (user) {
+      const safeUser = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        username: user.username,
+      };
+      return res.json({
+        user: safeUser
+      });
+    } else return res.json({ user: null });
+  }
+);
+
 
 module.exports = router;
