@@ -33,7 +33,7 @@ module.exports = {
         startDate: '2022-12-12 20:00:00',
         endDate: '2022-12-12 21:00:00'
       }
-    ])
+    ], {});
   },
 
   async down (queryInterface, Sequelize) {
