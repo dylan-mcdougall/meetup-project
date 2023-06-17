@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 const {
   Model
 } = require('sequelize');
+const { Sequelize } = require('.');
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
     /**
@@ -40,12 +41,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     venueId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+      type: DataTypes.INTEGER
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [5, 60]
+      }
     },
     description: {
       type: DataTypes.TEXT,
@@ -53,7 +56,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isValidField(value) {
+          if (value !== "Online" && value !== "In person") {
+            throw new Error("Type must be 'Online' or 'In person'");
+          }
+        }
+      }
     },
     capacity: {
       type: DataTypes.INTEGER,
@@ -61,15 +71,24 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.NUMERIC,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isDecimal: true
+      }
     },
     startDate: {
-      type: DataTypes.DATE,
-      allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+      // validate: {
+      //   isAfter: Date.now()
+      // }
     },
     endDate: {
-      type: DataTypes.DATE,
-      allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+      // validate: {
+      //   isAfter: this.startDate
+      // }
     }
   }, {
     sequelize,

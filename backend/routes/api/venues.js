@@ -1,15 +1,18 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('../../utils/auth');
+const { validateVenueBody } = require('../../utils/validation');
 
 const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
 
 const router = express.Router();
 
-router.put('/:venueId', requireAuth, async (req, res, next) => {
+router.put('/:venueId', requireAuth, validateVenueBody, async (req, res, next) => {
     const { address, city, state, lat, lng } = req.body;
 
-    let currVenue = await Venue.findByPk(req.params.venueId);
+    let currVenue = await Venue.findOne({
+        where: { id: req.params.venueId }
+    });
 
     const currGroup = await Group.findOne({
         where: { id: currVenue.groupId }

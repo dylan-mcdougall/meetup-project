@@ -31,7 +31,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isValidField(value) {
+          if (value !== "attending" && value !== "waitlist" && value !== "pending") {
+            throw new Error("Status must be attending, waitlist, or pending")
+          }
+        }
+      }
     }
   }, {
     sequelize,

@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
+const { handleValidationErrors, validateGroupBody, validateEventBody, validateVenueBody } = require('../../utils/validation');
+const { validationResult } = require('express-validator');
 
 const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
 
@@ -257,7 +259,7 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
     return res.json(payload);
 });
 
-router.post('/:groupId/events', requireAuth, async (req, res, next) => {
+router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res, next) => {
     const currGroup = await Group.findByPk(req.params.groupId);
 
     const user = await Membership.findOne({
@@ -275,8 +277,8 @@ router.post('/:groupId/events', requireAuth, async (req, res, next) => {
         })
     }
 
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-
+    let { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    
     await Event.create({
         groupId: req.params.groupId,
         venueId,
@@ -370,7 +372,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
     return res.json(payload);
 });
 
-router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
+router.post('/:groupId/venues', requireAuth, validateVenueBody, async (req, res, next) => {
     const { address, city, state, lat, lng } = req.body;
 
     const currGroup = await Group.findByPk(req.params.groupId);
@@ -406,7 +408,7 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
     res.json(payload);
 })
 
-router.put('/:groupId', requireAuth, async (req, res, next) => {
+router.put('/:groupId', requireAuth, validateGroupBody, async (req, res, next) => {
     let { name, about, type, private, city, state } = req.body;
 
     if (private === 'true') private = true;
@@ -481,7 +483,7 @@ router.get('/:groupId', async (req, res, next) => {
     } else res.json(payload);
 })
 
-router.post('/', requireAuth, async (req, res, next) => {
+router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
     const { name, about, type, private, city, state } = req.body;
     Group.create({
         organizerId: req.user.id,
@@ -497,8 +499,8 @@ router.post('/', requireAuth, async (req, res, next) => {
         where: { name: name, about: about }
     });
 
-    res.status(201).json(payload);
-})
+    return res.status(201).json(payload);
+});
 
 router.get('/', async (req, res, next) => {
     const groups = await Group.findAll();

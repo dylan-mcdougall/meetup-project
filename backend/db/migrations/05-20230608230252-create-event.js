@@ -22,7 +22,6 @@ module.exports = {
       },
       venueId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: { model: 'Venues', key: 'id', onDelete: 'CASCADE' }
       },
       name: {
@@ -45,11 +44,11 @@ module.exports = {
         allowNull: false
       },
       startDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false
       },
       endDate: {
-        type: Sequelize.DATE, 
+        type: Sequelize.STRING, 
         allowNull: false
       },
       createdAt: {

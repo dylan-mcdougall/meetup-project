@@ -14,7 +14,7 @@ module.exports = {
       {
         organizerId: 1,
         name: "Bob's Super Sick Party",
-        about: 'Just some bros being dudes',
+        about: 'Just some bros being dudes out doing bro things and holy how do I make this long enough?',
         type: 'In person',
         private: true,
         city: 'Fresno',
@@ -23,8 +23,8 @@ module.exports = {
       {
         organizerId: 2,
         name: "Karen's Hot Goss Sesh",
-        about: 'Bring some piping hot tea',
-        type: 'remote',
+        about: 'Bring some piping hot tea so we can talk mad ish on everyone else and man fake data is c r i n g e',
+        type: 'Online',
         private: true,
         city: 'New York City',
         state: 'NY'

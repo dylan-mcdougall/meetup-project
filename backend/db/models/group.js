@@ -46,15 +46,26 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        len: [1, 60]
+      }
     },
     about: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [50, 1000]
+      }
     },
     type: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isValidField(value) {
+          if (value !== 'Online' && value !== 'In person') throw new Error("Type must be 'Online' or 'In person'")
+        }
+      }
     },
     private: {
       type: DataTypes.BOOLEAN,

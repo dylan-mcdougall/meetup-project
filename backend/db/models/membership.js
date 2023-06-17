@@ -24,16 +24,23 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'Users', key: 'id', onDelete: 'CASCADE' }
+      references: { model: 'Users', key: 'id', onDelete: 'CASCADE', hooks: true }
     },
     groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'Groups', key: 'id', onDelete: 'CASCADE' }
+      references: { model: 'Groups', key: 'id', onDelete: 'CASCADE', hooks: true }
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isValidField(value) {
+          if (value !== 'member' && value !== 'co-host' && value !== 'host' && value !== 'pending') {
+            throw new Error('Invalid status field')
+          }
+        }
+      }
     }
   }, {
     sequelize,

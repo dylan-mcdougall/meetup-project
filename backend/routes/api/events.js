@@ -4,7 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
 const { validationResult } = require('express-validator');
 const { check } = require('express-validator');
-const { handleValidationErrors, validateQueryPagination } = require('../../utils/validation')
+const { handleValidationErrors, validateQueryPagination, validateEventBody } = require('../../utils/validation')
 
 const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
 
@@ -252,7 +252,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
     }
 });
 
-router.put('/:eventId', requireAuth, async (req, res, next) => {
+router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) => {
     const currEvent = await Event.findByPk(req.params.eventId);
 
     if (!currEvent) {
