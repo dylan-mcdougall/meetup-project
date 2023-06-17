@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![image](https://github.com/dylan-mcdougall/meetup-project/assets/107007986/28a4cceb-b47c-47b4-bcea-58af3cae9e38)
+![image](https://github.com/dylan-mcdougall/meetup-project/assets/107007986/0e78039b-4dac-4856-9dbe-ba14cd49963a)
 
 
 ## API Documentation
