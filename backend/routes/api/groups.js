@@ -7,6 +7,35 @@ const { User, Event, Venue, Membership, Group, Image, Attendance } = require('..
 
 const router = express.Router();
 
+router.delete('/:groupId/images/:imageId', requireAuth, async (req, res, next) => {
+    const group = await Group.findByPk(req.params.groupId);
+    const membership = await Membership.findOne({
+        where: { userId: req.user.id, groupId: req.params.groupId }
+    });
+    if (req.user.id !== group.organizerId && membership.status !== 'Co-host') {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
+
+    const image = await Image.findOne({
+        where: { imageableId: req.params.groupId, imageableType: 'Group'}
+    });
+    if (!image) {
+        return res.status(404).json({
+            message: "Group Image  couldn't be found"
+        });
+    }
+
+    await Image.destroy({
+        where: { id: req.params.imageId, imageableType: 'Group' }
+    });
+
+    return res.json({
+        message: "Successfully deleted"
+    });
+});
+
 router.delete('/:groupId/members/:memberId', requireAuth, async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId);
     if (!group) {
