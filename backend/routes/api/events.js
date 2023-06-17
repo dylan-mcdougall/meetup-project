@@ -2,6 +2,9 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
+const { validationResult } = require('express-validator');
+const { check } = require('express-validator');
+const { handleValidationErrors, validateQueryPagination } = require('../../utils/validation')
 
 const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
 
@@ -365,9 +368,29 @@ router.get('/:eventId', async (req, res, next) => {
 })
 
 
-router.get('/', async (req, res, next) => {
+router.get('/', validateQueryPagination, async (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const size = parseInt(req.query.size) || 20;
+    const name = req.query.name;
+    const type = req.query.type;
+    const startDate = req.query.startDate;
+
+    const filters = {};
+    if (name) {
+        filters.name = { [Op.like]: `%${name}%` };
+    }
+    if (type) {
+        filters.type = type;
+    }
+    if (startDate) {
+        filters.startDate = { [Op.gte]: new Date(startDate) };
+    }
+
     const events = await Event.findAll({
-        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate']
+        where: filters,
+        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
+        limit: size,
+        offset: size * (page - 1),
     });
 
     for (let i = 0; i < events.length; i++) {
@@ -384,7 +407,9 @@ router.get('/', async (req, res, next) => {
             where: { imageableId: events[i].id, imageableType: 'Event', preview: true }
         });
 
-        events[i].dataValues.previewImage = previewUrl.url;
+        if (previewUrl) {
+            events[i].dataValues.previewImage = previewUrl.url;
+        }
 
         events[i].dataValues.Group = await Group.findOne({
             where: { id: groupId },
@@ -402,7 +427,6 @@ router.get('/', async (req, res, next) => {
         }
     }
 
-    console.log(events);
     return res.json(events);
 })
 
