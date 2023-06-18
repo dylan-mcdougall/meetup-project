@@ -89,7 +89,7 @@ router.post(
         errResponse.errors.username = "User with that username already exists"
       }
       console.log(errResponse);
-      if (errResponse.message = "User already exists") {
+      if (errResponse.message === "User already exists") {
         return res.status(500).json(errResponse);
       }
 
