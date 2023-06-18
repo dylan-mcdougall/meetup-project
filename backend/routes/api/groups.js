@@ -531,7 +531,9 @@ router.get('/', async (req, res, next) => {
         })
         groups[i].dataValues.numMembers = numMembers.length;
         let previewImage = await Image.findOne({ where: { imageableId: currGroup.id, imageableType: 'Group', preview: true } });
-        groups[i].dataValues.previewImage = previewImage.url;
+        if (previewImage) {
+            groups[i].dataValues.previewImage = previewImage.url;
+        }
         payload.Groups.push(groups[i]);
     }
 
