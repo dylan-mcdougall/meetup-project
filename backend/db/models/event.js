@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       );
       Event.hasMany(
         models.Attendance,
-        { foreignKey: 'eventId' }
+        { foreignKey: 'eventId', onDelete: 'CASCADE', hooks: true }
       );
     }
   }

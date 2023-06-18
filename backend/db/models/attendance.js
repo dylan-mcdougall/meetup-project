@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       );
       Attendance.belongsTo(
         models.User,
-        { foreignKey: 'userId', targetKey: 'id', onDelete: 'CASCADE', hooks: true }
+        { foreignKey: 'userId', targetKey: 'id' }
       );
     }
   }
@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     eventId: {
       type: DataTypes.INTEGER,
-      references: { model: 'Events', key: 'id', onDelete: 'CASCADE', hooks: true }
+      allowNull: false,
+      references: { model: 'Events', otherKey: 'id', onDelete: 'CASCADE', constraints: false, hooks: true }
     },
     status: {
       type: DataTypes.STRING,

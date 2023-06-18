@@ -22,7 +22,9 @@ module.exports = {
       },
       eventId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Events', key: 'id', onDelete: 'CASCADE', hooks: true }
+        allowNull: false,
+        references: { model: 'Events', key: 'id' },
+        onDelete: 'CASCADE'
       },
       status: {
         type: Sequelize.STRING,
