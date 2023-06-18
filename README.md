@@ -271,7 +271,7 @@ Returns all the groups.
           "createdAt": "2021-11-19 20:39:36",
           "updatedAt": "2021-11-19 20:39:36",
           "numMembers": 10,
-          "previewImage": "image url",
+          "previewImage": "image url"
         }
       ]
     }
@@ -308,7 +308,7 @@ Returns all the groups.
           "createdAt": "2021-11-19 20:39:36",
           "updatedAt": "2021-11-19 20:39:36",
           "numMembers": 10,
-          "previewImage": "image url",
+          "previewImage": "image url"
         }
       ]
     }
@@ -382,7 +382,7 @@ Returns the details of a group specified by its id.
 
     ```json
     {
-      "message": "Group couldn't be found",
+      "message": "Group couldn't be found"
     }
     ```
 
@@ -405,7 +405,7 @@ Creates and returns a new group.
       "type": "In person",
       "private": true,
       "city": "New York",
-      "state": "NY",
+      "state": "NY"
     }
     ```
 
@@ -516,7 +516,7 @@ Updates and returns an existing group.
       "type": "In person",
       "private": true,
       "city": "New York",
-      "state": "NY",
+      "state": "NY"
     }
     ```
 
@@ -640,7 +640,7 @@ Returns all venues for a group specified by its id
         "city": "New York",
         "state": "NY",
         "lat": 37.7645358,
-        "lng": -122.4730327,
+        "lng": -122.4730327
       }
     ]
   }
@@ -679,7 +679,7 @@ Creates and returns a new venue for a group specified by its id
     "city": "New York",
     "state": "NY",
     "lat": 37.7645358,
-    "lng": -122.4730327,
+    "lng": -122.4730327
   }
   ```
 
@@ -752,7 +752,7 @@ Edit a new venue specified by its id
     "city": "New York",
     "state": "NY",
     "lat": 37.7645358,
-    "lng": -122.4730327,
+    "lng": -122.4730327
   }
   ```
 
@@ -863,7 +863,7 @@ Returns all the events.
           "Venue": {
             "id": 1,
             "city": "New York",
-            "state": "NY",
+            "state": "NY"
           },
         },
       ]
@@ -1039,7 +1039,7 @@ Creates and returns a new event for a group specified by its id
       "price": 18.50,
       "description": "The first meet and greet for our group! Come say hello!",
       "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
+      "endDate": "2021-11-19 22:00:00"
     }
     ```
 
@@ -1167,7 +1167,7 @@ Edit and returns an event specified by its id
       "price": 18.50,
       "description": "The first meet and greet for our group! Come say hello!",
       "startDate": "2021-11-19 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
+      "endDate": "2021-11-19 22:00:00"
     }
     ```
 
@@ -1602,7 +1602,7 @@ Returns the attendees of an event specified by its id.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/events/:eventId/attendence
+  * URL: /api/events/:eventId/attendance
   * Body: none
 
 * Successful Response: If you ARE the organizer of the group or a member of the
@@ -1695,7 +1695,7 @@ Request attendance for an event specified by id.
 * Require Authorization: Current User must be a member of the group
 * Request
   * Method: POST
-  * URL: /api/events/:eventId/attendence
+  * URL: /api/events/:eventId/attendance
   * Headers:
     * Content-Type: application/json
   * Body: none
@@ -1759,7 +1759,7 @@ Change the status of an attendance for an event specified by id.
   have a membership to the group with the status of "co-host"
 * Request
   * Method: PATCH
-  * URL: /api/events/:eventId/attendence/:attendenceId
+  * URL: /api/events/:eventId/attendance/:attendanceId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1831,7 +1831,7 @@ Delete an attendance to an event specified by id.
   the user whose attendance is being deleted
 * Request
   * Method: DELETE
-  * URL: /api/events/:eventId/attendence/:attendenceId
+  * URL: /api/events/:eventId/attendance/:attendanceId
   * Headers:
     * Content-Type: application/json
   * Body:
