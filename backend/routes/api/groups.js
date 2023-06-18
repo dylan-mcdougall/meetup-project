@@ -468,7 +468,12 @@ router.get('/:groupId', async (req, res, next) => {
         {
             model: Venue, attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
         }]
+    });
+
+    let numMembers = await Membership.findAll({
+        where: { groupId: payload.id, status: { [Op.in]: ['member', 'host', 'co-host'] } }
     })
+    payload.dataValues.numMembers = numMembers.length;
     
     if (!payload) {
         return res.status(404).json({
@@ -479,7 +484,7 @@ router.get('/:groupId', async (req, res, next) => {
 
 router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
     const { name, about, type, private, city, state } = req.body;
-    Group.create({
+    await Group.create({
         organizerId: req.user.id,
         name,
         about,
@@ -505,7 +510,7 @@ router.get('/', async (req, res, next) => {
     for (let i = 0; i < groups.length; i++) {
         let currGroup = groups[i];
         let numMembers = await Membership.findAll({
-            where: { groupId: currGroup.id, status: 'member' }
+            where: { groupId: currGroup.id, status: { [Op.in]: ['member', 'host', 'co-host'] } }
         })
         groups[i].dataValues.numMembers = numMembers.length;
         let previewImage = await Image.findOne({ where: { imageableId: currGroup.id, imageableType: 'Group', preview: true } });

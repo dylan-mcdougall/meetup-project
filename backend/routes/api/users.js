@@ -31,10 +31,10 @@ const validateSignup = [
   handleValidationErrors
 ];
 
-router.get('/:usersId/groups', requireAuth, async (req, res, next) => {
+router.get('/current/groups', requireAuth, async (req, res, next) => {
   let tempArr = [];
   const list = await Membership.findAll({
-    where: { memberId: req.params.usersId },
+    where: { memberId: req.user.id },
     attributes: [
       'groupId'
     ]
@@ -50,7 +50,7 @@ router.get('/:usersId/groups', requireAuth, async (req, res, next) => {
 
   for (let i = 0; i < target.length; i++) {
     const numMembers = await Membership.findAll({
-      where: { groupId: target[i].id, status: 'member' }
+      where: { groupId: target[i].id, status: { [Op.in]: ['member', 'host', 'co-host']} }
     })
     target[i].dataValues.numMembers = numMembers.length;
     const preview = await Image.findOne({
@@ -69,8 +69,29 @@ router.post(
     async (req, res) => {
       const { firstName, lastName, email, password, username } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
+
+      const errResponse = {
+        message: "",
+        errors: {}
+      }
+      const emailCheck = await User.findOne({ where: { email: email } });
+      if (emailCheck) {
+        errResponse.message = "User already exists";
+        errResponse.errors.email = "User with that email already exists"
+      }
+      const usernameCheck = await User.findOne({ where: { username: username } });
+      if (usernameCheck) {
+        errResponse.message = "User already exists";
+        errResponse.errors.username = "User with that username already exists"
+      }
+
+      if (errResponse.message = "User already exists") {
+        return res.status(500).json(errResponse);
+      }
+
       const user = await User.create({ firstName, lastName, email, username, hashedPassword });
-  
+      
+
       const safeUser = {
         id: user.id,
         firstName: user.firstName,
