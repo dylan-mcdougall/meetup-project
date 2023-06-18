@@ -497,7 +497,10 @@ router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
 });
 
 router.get('/', async (req, res, next) => {
-    const groups = [await Group.findAll()];
+    const groups = await Group.findAll();
+    const payload = {
+        Groups: []
+    }
 
     for (let i = 0; i < groups.length; i++) {
         let currGroup = groups[i];
@@ -507,9 +510,10 @@ router.get('/', async (req, res, next) => {
         groups[i].dataValues.numMembers = numMembers.length;
         let previewImage = await Image.findOne({ where: { imageableId: currGroup.id, imageableType: 'Group', preview: true } });
         groups[i].dataValues.previewImage = previewImage.url;
+        payload.Groups.push(groups[i]);
     }
 
-    return res.json(groups);
+    return res.json(payload);
 })
 
 module.exports = router;
