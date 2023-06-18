@@ -497,7 +497,7 @@ router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
 });
 
 router.get('/', async (req, res, next) => {
-    const groups = await Group.findAll();
+    const groups = [await Group.findAll()];
 
     for (let i = 0; i < groups.length; i++) {
         let currGroup = groups[i];
