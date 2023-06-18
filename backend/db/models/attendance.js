@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     eventId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: { model: 'Events', key: 'id', onDelete: 'CASCADE', hooks: true }
     },
     status: {
