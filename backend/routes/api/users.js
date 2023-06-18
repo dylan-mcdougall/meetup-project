@@ -33,9 +33,8 @@ const validateSignup = [
 
 router.get('/current/groups', requireAuth, async (req, res, next) => {
   let tempArr = [];
-  const { user } = req;
   const list = await Membership.findAll({
-    where: { memberId: user.id },
+    where: { memberId: req.user.id },
     attributes: [
       'groupId'
     ]
