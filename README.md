@@ -284,7 +284,7 @@ Returns all the groups.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/users/:userId/groups
+  * URL: /api/users/current/groups
   * Body: none
 
 * Successful Response
