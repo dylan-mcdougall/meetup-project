@@ -224,8 +224,12 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
     const user = await Attendance.findOne({
         where: { userId: req.user.id, eventId: req.params.eventId }
     });
-
-    if ((user.status !== 'attending' && user.status !== 'host' && user.status !== 'co-host') || !user) {
+    if (!user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
+    if (user.status !== 'attending' && user.status !== 'host' && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         });

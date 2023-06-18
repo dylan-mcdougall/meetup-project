@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Event.belongsToMany(
         models.Group,
-        { through: 'Venue', foreignKey: 'id', otherKey: 'groupId', onDelete: 'CASCADE', hooks: true }
+        { through: 'Venue', foreignKey: 'groupId', otherKey: 'id', onDelete: 'CASCADE', hooks: true }
       );
       Event.belongsTo(
         models.Venue,
