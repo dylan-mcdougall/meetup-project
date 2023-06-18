@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       );
       Attendance.belongsTo(
         models.User,
-        { foreignKey: 'userId' }
+        { foreignKey: 'userId', targetKey: 'id', onDelete: 'CASCADE', hooks: true }
       );
     }
   }
