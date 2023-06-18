@@ -21,7 +21,7 @@ router.delete('/:eventId/images/:imageId', requireAuth, async (req, res, next) =
     }
 
     const image = await Image.findOne({
-        where: { imageableId: req.params.eventId, imageableType: 'Event'}
+        where: { id: req.params.imageId, imageableId: req.params.eventId, imageableType: 'Event'}
     });
     if (!image) {
         return res.status(404).json({
@@ -63,7 +63,7 @@ router.delete('/:eventId/attendance/:attendanceId', requireAuth, async (req, res
     }
 
     await Attendance.destroy({
-        where: { id: req.body.attendanceId }
+        where: { id: attendance.id }
     });
 
     return res.json({
@@ -225,7 +225,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
         where: { userId: req.user.id, eventId: req.params.eventId }
     });
 
-    if (user.status !== 'attending' && user.status !== 'host' && user.status !== 'co-host') {
+    if ((user.status !== 'attending' && user.status !== 'host' && user.status !== 'co-host') || !user) {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -315,7 +315,7 @@ router.delete('/:eventId', requireAuth, async (req, res ,next) => {
     const user = await Membership.findOne({
         where: { memberId: req.user.id, groupId: currEvent.groupId }
     });
-    if (user.memberId !== group.organizerId && user.status !== 'co-host') {
+    if (user.memberId !== group.organizerId && user.status !== 'co-host' || !user) {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -374,6 +374,10 @@ router.get('/', validateQueryPagination, async (req, res, next) => {
     const type = req.query.type;
     const startDate = req.query.startDate;
 
+    const payload = {
+        Events: []
+    }
+
     const filters = {};
     if (name) {
         filters.name = { [Op.like]: `%${name}%` };
@@ -424,9 +428,11 @@ router.get('/', validateQueryPagination, async (req, res, next) => {
             });
             events[i].dataValues.Venue = venue;
         }
+
+        payload.Events.push(events[i]);
     }
 
-    return res.json(events);
+    return res.json(payload);
 })
 
 module.exports = router;

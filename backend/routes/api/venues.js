@@ -13,6 +13,11 @@ router.put('/:venueId', requireAuth, validateVenueBody, async (req, res, next) =
     let currVenue = await Venue.findOne({
         where: { id: req.params.venueId }
     });
+    if (!currVenue) {
+        return res.status(404).json({
+            message: "Venue couldn't be found"
+        })
+    }
 
     const currGroup = await Group.findOne({
         where: { id: currVenue.groupId }
@@ -21,12 +26,7 @@ router.put('/:venueId', requireAuth, validateVenueBody, async (req, res, next) =
     const user = await Membership.findOne({
         where: { memberId: req.user.id, groupId: currGroup.id }
     })
-
-    if (!currVenue) {
-        return res.status(404).json({
-            message: "Venue couldn't be found"
-        })
-    }
+    
     if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
