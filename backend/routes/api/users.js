@@ -34,7 +34,7 @@ const validateSignup = [
 router.get('/:usersId/groups', requireAuth, async (req, res, next) => {
   let tempArr = [];
   const list = await Membership.findAll({
-    where: { userId: req.params.usersId },
+    where: { memberId: req.params.usersId },
     attributes: [
       'groupId'
     ]
@@ -50,7 +50,7 @@ router.get('/:usersId/groups', requireAuth, async (req, res, next) => {
 
   for (let i = 0; i < target.length; i++) {
     const numMembers = await Membership.findAll({
-      where: { groupId: target[i].id, status: 'Member' }
+      where: { groupId: target[i].id, status: 'member' }
     })
     target[i].dataValues.numMembers = numMembers.length;
     const preview = await Image.findOne({
@@ -59,8 +59,7 @@ router.get('/:usersId/groups', requireAuth, async (req, res, next) => {
     target[i].dataValues.preview = preview.imageUrl
   }
 
-  console.log(target);
-  res.json(target);
+  return res.json(target);
 })
 
 // Sign up

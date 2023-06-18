@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
 const { handleValidationErrors, validateGroupBody, validateEventBody, validateVenueBody } = require('../../utils/validation');
-const { validationResult } = require('express-validator');
+
 
 const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
 
@@ -12,9 +12,9 @@ const router = express.Router();
 router.delete('/:groupId/images/:imageId', requireAuth, async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId);
     const membership = await Membership.findOne({
-        where: { userId: req.user.id, groupId: req.params.groupId }
+        where: { memberId: req.user.id, groupId: req.params.groupId }
     });
-    if (req.user.id !== group.organizerId && membership.status !== 'Co-host') {
+    if (req.user.id !== group.organizerId && membership.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -57,7 +57,7 @@ router.delete('/:groupId/members/:memberId', requireAuth, async (req, res, next)
     }
 
     const membership = await Membership.findOne({
-        where: { userId: req.body.memberId, groupId: req.params.groupId }
+        where: { memberId: req.body.memberId, groupId: req.params.groupId }
     });
     if (!membership) {
         return res.status(404).json({
@@ -72,7 +72,7 @@ router.delete('/:groupId/members/:memberId', requireAuth, async (req, res, next)
     }
 
     await Membership.destroy({
-        where: { userId: req.body.memberId, groupId: req.params.groupId }
+        where: { memberId: req.body.memberId, groupId: req.params.groupId }
     });
 
     return res.json({
@@ -101,7 +101,7 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
     }
 
     const membership = await Membership.findOne({
-        where: { userId: req.body.memberId, groupId: req.params.groupId }
+        where: { memberId: req.body.memberId, groupId: req.params.groupId }
     });
     if (!membership) {
         return res.status(404).json({
@@ -109,7 +109,7 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
         })
     }
 
-    if (req.body.status === "Pending") {
+    if (req.body.status === "pending") {
         return res.status(400).json({
             message: "Validations Error",
             errors: {
@@ -118,31 +118,30 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
         })
     }
 
-    if (req.body.status === "Co-host" && group.organizerId !== req.user.id) {
+    if (req.body.status === "co-host" && group.organizerId !== req.user.id) {
         return res.status(403).json({
             message: "Forbidden"
         });
     }
 
-    if (group.organizerId !== req.user.id && membership.status !== "Co-host") {
+    if (group.organizerId !== req.user.id && membership.status !== "co-host") {
         return res.status(403).json({
             message: "Forbidden"
         });
     }
 
     await Membership.update({
-        userId: memberId,
+        memberId: memberId,
         status: status
     }, {
         where: { userId: req.params.memberId, groupId: req.params.groupId }
     });
 
     const payload = await Membership.findOne({
-        where: { userId: req.params.memberId, groupId: req.params.groupId },
+        where: { memberId: req.params.memberId, groupId: req.params.groupId },
         attributes: ['id', 'groupId', 'userId', 'status']
     });
 
-    console.log(payload);
     return res.json(payload);
 })
 
@@ -155,28 +154,28 @@ router.post('/:groupId/members', requireAuth, async (req, res, next) => {
     }
 
     const membership = await Membership.findOne({
-        where: { userId: req.user.id, groupId: req.params.groupId }
+        where: { memberId: req.user.id, groupId: req.params.groupId }
     });
     if (membership) {
-        if (membership.status === 'Member' || membership.status === 'Host' || membership.status === 'Co-host') {
+        if (membership.status === 'member' || membership.status === 'host' || membership.status === 'co-host') {
             return res.status(400).json({
                 message: "User is already a member of this group"
             });
         }
-        if (membership.status === 'Pending') {
+        if (membership.status === 'pending') {
             return res.status(400).json({
                 message: "Membership has already been requested"
             });
         }
     }
     await Membership.create({
-        userId: req.user.id,
+        memberId: req.user.id,
         groupId: req.params.groupId,
-        status: 'Pending'
+        status: 'pending'
     });
 
     const payload = await Membership.findOne({
-        where: { userId: req.user.id, groupId: req.params.groupId },
+        where: { memberId: req.user.id, groupId: req.params.groupId },
         attributes: ['id', 'status']
     });
 
@@ -201,30 +200,28 @@ router.get('/:groupId/members', async (req, res, next) => {
 
         for (let i = 0; i < memberships.length; i++) {
             let user = await User.findOne({
-                where: { id: memberships[i].userId },
+                where: { id: memberships[i].memberId },
                 attributes: ['id', 'firstName', 'lastName']
             });
             user.dataValues.Membership = { status: memberships[i].status };
             payload.Members.push(user);
         }
         
-        console.log(payload);
         return res.json(payload);
     } else {
         const memberships = await Membership.findAll({
-            where: { groupId: req.params.groupId, status: { [Op.in]: ['Member', 'Host', 'Co-host'] } }
+            where: { groupId: req.params.groupId, status: { [Op.in]: ['member', 'host', 'co-host'] } }
         });
 
         for (let i = 0; i < memberships.length; i++) {
             let user = await User.findOne({
-                where: { id: memberships[i].userId },
+                where: { id: memberships[i].memberId },
                 attributes: ['id', 'firstName', 'lastName']
             });
             user.dataValues.Membership = { status: memberships[i].status };
             payload.Members.push(user);
         }
         
-        console.log(payload);
         return res.json(payload);
     }
 });
@@ -263,7 +260,7 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
     const currGroup = await Group.findByPk(req.params.groupId);
 
     const user = await Membership.findOne({
-        where: { userId: req.user.id, groupId: req.params.groupId }
+        where: { memberId: req.user.id, groupId: req.params.groupId }
     })
 
     if (!currGroup) {
@@ -312,12 +309,9 @@ router.get('/:groupId/events', async (req, res, next) => {
         where: { groupId: req.params.groupId },
         attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate']
     });
-
     for (let i = 0; i < events.length; i++) {
-        console.log(events[i]);
-
         const numAttending = await Attendance.findAll({
-                where: { eventId: events[i].id, status: 'Attending' }
+                where: { eventId: events[i].id, status: 'attending' }
             });
 
         events[i].dataValues.numAttending = numAttending.length;
@@ -351,7 +345,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
     const currGroup = await Group.findByPk(req.params.groupId);
 
     const user = await Membership.findOne({
-        where: { userId: req.user.id, groupId: req.params.groupId }
+        where: { memberId: req.user.id, groupId: req.params.groupId }
     })
 
     if (!currGroup) {
@@ -378,7 +372,7 @@ router.post('/:groupId/venues', requireAuth, validateVenueBody, async (req, res,
     const currGroup = await Group.findByPk(req.params.groupId);
 
     const user = await Membership.findOne({
-        where: { userId: req.user.id, groupId: req.params.groupId }
+        where: { memberId: req.user.id, groupId: req.params.groupId }
     })
 
     if (!currGroup) {
@@ -405,7 +399,7 @@ router.post('/:groupId/venues', requireAuth, validateVenueBody, async (req, res,
         where: { lat: lat, lng: lng }
     });
 
-    res.json(payload);
+    return res.json(payload);
 })
 
 router.put('/:groupId', requireAuth, validateGroupBody, async (req, res, next) => {
@@ -477,10 +471,10 @@ router.get('/:groupId', async (req, res, next) => {
     })
     
     if (!payload) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
-    } else res.json(payload);
+    } else return res.json(payload);
 })
 
 router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
@@ -508,7 +502,7 @@ router.get('/', async (req, res, next) => {
     for (let i = 0; i < groups.length; i++) {
         let currGroup = groups[i];
         let numMembers = await Membership.findAll({
-            where: { groupId: currGroup.id, status: 'Member' }
+            where: { groupId: currGroup.id, status: 'member' }
         })
         groups[i].dataValues.numMembers = numMembers.length;
         let previewImage = await Image.findOne({ where: { imageableId: currGroup.id, imageableType: 'Group', preview: true } });

@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Event.belongsToMany(
         models.Group,
-        { through: 'Venue', foreignKey: 'id', otherKey: 'groupId', onDelete: 'CASCADE' }
+        { through: 'Venue', foreignKey: 'id', otherKey: 'groupId', onDelete: 'CASCADE', hooks: true }
       );
       Event.belongsTo(
         models.Venue,
@@ -27,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       );
       Event.hasMany(
         models.Image,
-        { as: 'EventImages', foreignKey: 'imageableId', constraints: false, onDelete: 'CASCADE', scope: { imageableType: 'Event' } } 
+        { as: 'EventImages', foreignKey: 'imageableId', constraints: false, onDelete: 'CASCADE', hooks: true, scope: { imageableType: 'Event' } } 
       );
       Event.hasMany(
         models.Attendance,
-        { foreignKey: 'eventId', onDelete: 'CASCADE'}
+        { foreignKey: 'eventId', onDelete: 'CASCADE', hooks: true }
       );
     }
   }

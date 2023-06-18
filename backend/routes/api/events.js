@@ -2,8 +2,6 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
-const { validationResult } = require('express-validator');
-const { check } = require('express-validator');
 const { handleValidationErrors, validateQueryPagination, validateEventBody } = require('../../utils/validation')
 
 const { User, Event, Venue, Membership, Group, Image, Attendance } = require('../../db/models');
@@ -14,9 +12,9 @@ router.delete('/:eventId/images/:imageId', requireAuth, async (req, res, next) =
     const event = await Event.findByPk(req.params.eventId);
     const group = await Group.findByPk(event.groupId);
     const membership = await Membership.findOne({
-        where: { userId: req.user.id, groupId: group.id }
+        where: { memberId: req.user.id, groupId: group.id }
     });
-    if (req.user.id !== group.organizerId && membership.status !== "Co-host") {
+    if (req.user.id !== group.organizerId && membership.status !== "co-host") {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -51,7 +49,6 @@ router.delete('/:eventId/attendance/:attendanceId', requireAuth, async (req, res
     const attendance = await Attendance.findOne({
         where: { userId: req.body.userId, eventId: req.params.eventId }
     });
-    console.log(attendance);
     if (!attendance) {
         return res.status(404).json({
             message: "Attendance does not exist for this user"
@@ -66,7 +63,7 @@ router.delete('/:eventId/attendance/:attendanceId', requireAuth, async (req, res
     }
 
     await Attendance.destroy({
-        where: { id: req.params.attendanceId }
+        where: { id: req.body.attendanceId }
     });
 
     return res.json({
@@ -98,11 +95,11 @@ router.patch('/:eventId/attendance/:attendanceId', requireAuth, async (req, res,
         })
     }
 
-    if (user.userId !== group.organizerId && user.status !== 'Co-host') {
+    if (user.userId !== group.organizerId && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         });
-    } else if (req.body.status === "Pending") {
+    } else if (req.body.status === "pending") {
         return res.status(400).json({
             message: "Cannot change an attendance status to pending"
         });
@@ -117,7 +114,7 @@ router.patch('/:eventId/attendance/:attendanceId', requireAuth, async (req, res,
             attributes: ['id', 'userId', 'eventId', 'status']
         });
 
-        res.json(payload);
+        return res.json(payload);
     }
 })
 
@@ -132,7 +129,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
 
     const group = await Group.findByPk(event.groupId);
-    const membership = await Membership.findOne({ where: { userId: req.user.id, groupId: group.id } })
+    const membership = await Membership.findOne({ where: { memberId: req.user.id, groupId: group.id } })
     if (!membership) {
         return res.status(403).json({
             message: "Forbidden"
@@ -140,27 +137,27 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
 
     const attendance = await Attendance.findOne({
-        where: { userId: req.user.id, eventId: req.params.eventId }
+        where: { userId: req.body.userId, eventId: req.params.eventId }
     });
-    if (attendance && (attendance.status === "Pending" || attendance.status === "Waitlist")) {
+    if (attendance && (attendance.status === "pending" || attendance.status === "waitlist")) {
         return res.status(400).json({
             message: "Attendance has already been requested"
         })
     }
-    if (attendance && attendance.status === "Attending") {
+    if (attendance && attendance.status === "attending") {
         return res.status(400).json({
             message: "User is already an attendee of the event"
         })
     }
 
     await Attendance.create({
-        userId: req.user.id,
+        userId: req.body.userId,
         eventId: event.id,
-        status: "Pending"
+        status: "pending"
     });
 
     const payload = await Attendance.findOne({
-        where: { userId: req.user.id, eventId: req.params.eventId },
+        where: { userId: req.body.userId, eventId: req.params.eventId },
         attributes: ['userId', 'status']
     });
 
@@ -178,14 +175,14 @@ router.get('/:eventId/attendance', async (req, res, next) => {
     }
 
     const group = await Group.findByPk(event.groupId);
-    const membership = await Membership.findOne({ where: { userId: req.user.id, groupId: group.id } })
+    const membership = await Membership.findOne({ where: { memberId: req.user.id, groupId: group.id } })
 
     const payload = {};
     payload.Attendees = [];
 
-    if (req.user.id !== group.organizerId && membership.status !== 'Co-host') {
+    if (req.user.id !== group.organizerId && membership.status !== 'co-host') {
         const attendees = await Attendance.findAll({
-            where: { eventId: req.params.eventId, status: { [Op.in]: ['Attending', 'Waitlist']} }
+            where: { eventId: req.params.eventId, status: { [Op.in]: ['attending', 'waitlist']} }
         });
         for (let i = 0; i < attendees.length; i++) {
             const attendee = await User.findOne({
@@ -197,7 +194,7 @@ router.get('/:eventId/attendance', async (req, res, next) => {
         }
     }
 
-    if (req.user.id === group.organizerId || membership.status === 'Co-host') {
+    if (req.user.id === group.organizerId || membership.status === 'co-host') {
         const attendees = await Attendance.findAll({
             where: { eventId: req.params.eventId }
         });
@@ -228,7 +225,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
         where: { userId: req.user.id, eventId: req.params.eventId }
     });
 
-    if (user.status !== 'Attending' && user.status !== 'Host' && user.status !== 'Co-host') {
+    if (user.status !== 'attending' && user.status !== 'host' && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -264,10 +261,10 @@ router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) =
     const group = await Group.findByPk(currEvent.groupId);
 
     const user = await Membership.findOne({
-        where: { userId: req.user.id, groupId: currEvent.groupId }
+        where: { memberId: req.user.id, groupId: currEvent.groupId }
     });
 
-    if (user.userId !== group.organizerId && user.status !== 'co-host') {
+    if (user.memberId !== group.organizerId && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -275,13 +272,15 @@ router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) =
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body; 
 
-    const venue = await Venue.findByPk(venueId);
-    console.log(venue);
-    if (!venue) {
-        return res.status(404).json({
-            message: "Venue couldn't be found"
-        })
+    if (venueId) {
+        const venue = await Venue.findByPk(venueId);
+        if (!venue) {
+            return res.status(404).json({
+                message: "Venue couldn't be found"
+            })
+        }
     }
+    
 
     await Event.update({
         venueId: venueId,
@@ -314,9 +313,9 @@ router.delete('/:eventId', requireAuth, async (req, res ,next) => {
 
     const group = await Group.findByPk(currEvent.groupId);
     const user = await Membership.findOne({
-        where: { userId: req.user.id, groupId: currEvent.groupId }
+        where: { memberId: req.user.id, groupId: currEvent.groupId }
     });
-    if (user.userId !== group.organizerId && user.status !== 'co-host') {
+    if (user.memberId !== group.organizerId && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -345,7 +344,7 @@ router.get('/:eventId', async (req, res, next) => {
     }
 
     const numAttending = await Attendance.findAll({
-        where: { eventId: req.params.eventId, status: 'Attending' } 
+        where: { eventId: req.params.eventId, status: 'attending' } 
     });
 
     event.dataValues.numAttending = numAttending.length;
@@ -398,7 +397,7 @@ router.get('/', validateQueryPagination, async (req, res, next) => {
         const groupId = events[i].groupId;
 
         const numAttending = await Attendance.findAll({
-                where: { eventId: events[i].id, status: 'Attending' }
+                where: { eventId: events[i].id, status: 'attending' }
             });
 
         events[i].dataValues.numAttending = numAttending.length;

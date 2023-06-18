@@ -30,11 +30,11 @@ module.exports = (sequelize, DataTypes) => {
       );
       Group.hasMany(
         models.Image,
-        { as: 'GroupImages', foreignKey: 'imageableId', onDelete: 'CASCADE', constraints: false, scope: { imageableType: 'Group' } }
+        { as: 'GroupImages', foreignKey: 'imageableId', onDelete: 'CASCADE', hooks: true, constraints: false, scope: { imageableType: 'Group' } }
       );
       Group.hasMany(
         models.Venue,
-        { foreignKey: 'groupId', onDelete: 'CASCADE' }
+        { foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true }
       )
     }
   }

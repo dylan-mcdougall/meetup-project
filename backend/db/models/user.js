@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(
         models.Group,
-        { foreignKey: 'organizerId', otherKey: 'id', onDelete: 'CASCADE' }
+        { foreignKey: 'organizerId', otherKey: 'id', onDelete: 'CASCADE', hooks: true }
       );
       User.belongsToMany(
         models.Group,
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       );
       User.hasMany(
         models.Attendance,
-        { foreignKey: 'userId', otherKey: 'id', onDelete: 'CASCADE' }
+        { foreignKey: 'userId', otherKey: 'id', onDelete: 'CASCADE', hooks: true }
       )
     }
   }

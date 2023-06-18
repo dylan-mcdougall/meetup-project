@@ -19,7 +19,7 @@ router.put('/:venueId', requireAuth, validateVenueBody, async (req, res, next) =
     });
 
     const user = await Membership.findOne({
-        where: { userId: req.user.id, groupId: currGroup.id }
+        where: { memberId: req.user.id, groupId: currGroup.id }
     })
 
     if (!currVenue) {
