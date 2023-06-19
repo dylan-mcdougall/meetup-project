@@ -520,17 +520,17 @@ router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
         state
     });
 
-    const totalGroups = await Group.findAll({});
-
-    await Membership.create({
-        memberId: req.user.id,
-        groupId: (totalGroups.length - 1),
-        status: 'host'
-    });
-
+    
     const payload = await Group.findOne({
         where: { name: name, about: about }
     });
+    
+    await Membership.create({
+        memberId: req.user.id,
+        groupId: payload.id,
+        status: 'host'
+    });
+
 
     return res.status(201).json(payload);
 });
