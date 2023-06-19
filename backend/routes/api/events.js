@@ -92,7 +92,7 @@ router.patch('/:eventId/attendance/:attendanceId', requireAuth, async (req, res,
     }
 
     const attendance = await Attendance.findOne({
-        where: { id: req.params.attendanceId, userId: req.body.userId }
+        where: { eventId: req.params.eventId, userId: req.body.userId }
     })
     if (!attendance) {
         return res.status(404).json({
@@ -146,6 +146,13 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     if (attendance && attendance.status === "attending") {
         return res.status(400).json({
             message: "User is already an attendee of the event"
+        })
+    }
+
+    const user = await User.findByPk(req.body.userId);
+    if (!user) {
+        return res.status(404).json({
+            message: "User doesn't exist"
         })
     }
 
