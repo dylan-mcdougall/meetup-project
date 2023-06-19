@@ -288,6 +288,12 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
         endDate
     });
 
+    await Attendance.create({
+        userId: req.user.id,
+        groupId: currGroup.id,
+        status: 'host'
+    });
+
     const payload = await Event.findOne({
         where: { name: name, description: description, startDate: startDate, endDate: endDate },
         attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'capacity', 'price', 'description', 'startDate', 'endDate']
@@ -509,6 +515,14 @@ router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
         private,
         city,
         state
+    });
+
+    const totalGroups = await Group.findAll({});
+
+    await Membership.create({
+        memberId: req.userId,
+        groupId: (totalGroups.length - 1),
+        status: 'host'
     });
 
     const payload = await Group.findOne({
