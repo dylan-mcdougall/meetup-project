@@ -82,9 +82,14 @@ router.patch('/:eventId/attendance/:attendanceId', requireAuth, async (req, res,
     }
 
     const group = await Group.findByPk(event.groupId);
-    const user = await Attendance.findOne({
-        where: { userId: req.user.id, eventId: req.params.eventId }
+    const user = await Membership.findOne({
+        where: { memberId: req.user.id, groupId: group.id }
     });
+    if (!user || (user.status !== 'co-host' && user.memberId !== group.organizerId)) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
 
     const attendance = await Attendance.findOne({
         where: { id: req.params.attendanceId, userId: req.body.userId }
@@ -94,28 +99,22 @@ router.patch('/:eventId/attendance/:attendanceId', requireAuth, async (req, res,
             message: "Attendance between the user and the event does not exist"
         })
     }
-
-    if (user.userId !== group.organizerId && user.status !== 'co-host') {
-        return res.status(403).json({
-            message: "Forbidden"
-        });
-    } else if (req.body.status === "pending") {
+    if (req.body.status === "pending") {
         return res.status(400).json({
             message: "Cannot change an attendance status to pending"
         });
-    } else {
-        await Attendance.update({
-            status: req.body.status
-        }, {
-            where: { userId: req.body.userId }
-        });
-        const payload = await Attendance.findOne({
-            where: { id: req.params.attendanceId, userId: req.body.userId, eventId: req.params.eventId },
-            attributes: ['id', 'userId', 'eventId', 'status']
-        });
-
-        return res.json(payload);
     }
+    await Attendance.update({
+        status: req.body.status
+    }, {
+        where: { userId: req.body.userId }
+    });
+    const payload = await Attendance.findOne({
+        where: { id: req.params.attendanceId, userId: req.body.userId, eventId: req.params.eventId },
+        attributes: ['id', 'userId', 'eventId', 'status']
+    });
+
+    return res.json(payload);
 })
 
 router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
@@ -416,6 +415,8 @@ router.get('/', validateQueryPagination, async (req, res, next) => {
 
         if (previewUrl) {
             events[i].dataValues.previewImage = previewUrl.url;
+        } else {
+            events[i].dataValues.previewImage = null;
         }
 
         events[i].dataValues.Group = await Group.findOne({

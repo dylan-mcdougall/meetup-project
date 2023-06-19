@@ -139,7 +139,7 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
 
     const payload = await Membership.findOne({
         where: { memberId: req.params.memberId, groupId: req.params.groupId },
-        attributes: ['id', 'groupId', 'userId', 'status']
+        attributes: ['id', 'groupId', 'memberId', 'status']
     });
 
     return res.json(payload);
@@ -533,6 +533,8 @@ router.get('/', async (req, res, next) => {
         let previewImage = await Image.findOne({ where: { imageableId: currGroup.id, imageableType: 'Group', preview: true } });
         if (previewImage) {
             groups[i].dataValues.previewImage = previewImage.url;
+        } else {
+            roups[i].dataValues.previewImage = null;
         }
         payload.Groups.push(groups[i]);
     }
