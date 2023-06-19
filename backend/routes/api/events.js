@@ -115,7 +115,7 @@ router.patch('/:eventId/attendance', requireAuth, async (req, res, next) => {
         where: { userId: req.body.userId }
     });
     const payload = await Attendance.findOne({
-        where: { id: req.params.attendanceId, userId: req.body.userId, eventId: req.params.eventId },
+        where: { userId: req.body.userId, eventId: req.params.eventId },
         attributes: ['id', 'userId', 'eventId', 'status']
     });
 
