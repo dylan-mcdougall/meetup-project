@@ -48,7 +48,7 @@ router.get('/current/groups', requireAuth, async (req, res, next) => {
   }
 
   const target = await Group.findAll({
-    where: { [Op.in]: { id: tempArr } }
+    where: { id: { [Op.in]: tempArr } }
   })
 
   for (let i = 0; i < target.length; i++) {
