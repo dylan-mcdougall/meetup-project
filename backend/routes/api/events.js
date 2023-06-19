@@ -38,7 +38,7 @@ router.delete('/:eventId/images/:imageId', requireAuth, async (req, res, next) =
     });
 })
 
-router.delete('/:eventId/attendance/:attendanceId', requireAuth, async (req, res, next) => {
+router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const event = await Event.findByPk(req.params.eventId);
     if (!event) {
         return res.status(404).json({
@@ -71,7 +71,7 @@ router.delete('/:eventId/attendance/:attendanceId', requireAuth, async (req, res
     })
 });
 
-router.patch('/:eventId/attendance/:attendanceId', requireAuth, async (req, res, next) => {
+router.patch('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const event = await Event.findOne({
         where: { id: req.params.eventId }
     });
@@ -164,7 +164,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
     const payload = await Attendance.findOne({
         where: { userId: req.body.userId, eventId: req.params.eventId },
-        attributes: ['userId', 'status']
+        attributes: ['id', 'userId', 'status']
     });
 
     return res.json(payload);

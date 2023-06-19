@@ -38,7 +38,7 @@ router.delete('/:groupId/images/:imageId', requireAuth, async (req, res, next) =
     });
 });
 
-router.delete('/:groupId/members/:memberId', requireAuth, async (req, res, next) => {
+router.delete('/:groupId/members', requireAuth, async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId);
     if (!group) {
         return res.status(404).json({
@@ -80,7 +80,7 @@ router.delete('/:groupId/members/:memberId', requireAuth, async (req, res, next)
     })
 })
 
-router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) => {
+router.patch('/:groupId/members', requireAuth, async (req, res, next) => {
     const { memberId, status } = req.body;
     
     const group = await Group.findByPk(req.params.groupId);
@@ -90,13 +90,22 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
         });
     }
     
-    const user = await User.findByPk(req.body.memberId);
-    if (!user) {
+    const target = await User.findByPk(req.body.memberId);
+    if (!target) {
         return res.status(400).json({
             message: "Validation error",
             errors: {
                 memberId: "User couldn't be found"
             }
+        })
+    }
+
+    const user = await Membership.findOne({
+        where: { memberId: req.user.id, groupId: req.params.groupId }
+    });
+    if (!user) {
+        return res.json({
+            message: "Forbidden"
         })
     }
 
@@ -124,7 +133,7 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
         });
     }
 
-    if (group.organizerId !== req.user.id && membership.status !== "co-host") {
+    if (group.organizerId !== req.user.id && user.status !== "co-host") {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -176,7 +185,7 @@ router.post('/:groupId/members', requireAuth, async (req, res, next) => {
 
     const payload = await Membership.findOne({
         where: { memberId: req.user.id, groupId: req.params.groupId },
-        attributes: ['memberId', 'status']
+        attributes: ['id', 'memberId', 'status']
     });
 
     return res.json(payload);
