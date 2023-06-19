@@ -301,7 +301,7 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
     await Attendance.create({
             userId: req.user.id,
             eventId: payload.id,
-            status: 'host'
+            status: 'attending'
         });
     return res.json(payload);
 })
