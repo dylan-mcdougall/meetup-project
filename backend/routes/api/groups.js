@@ -262,13 +262,17 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
     const user = await Membership.findOne({
         where: { memberId: req.user.id, groupId: req.params.groupId }
     })
-
+    if (!user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
     if (!currGroup) {
         return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
-    if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+    if (user && currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         })
@@ -308,7 +312,6 @@ router.get('/:groupId/events', async (req, res, next) => {
     const payload = {
         Events: []
     }
-
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
@@ -520,7 +523,7 @@ router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
     const totalGroups = await Group.findAll({});
 
     await Membership.create({
-        memberId: req.userId,
+        memberId: req.user.id,
         groupId: (totalGroups.length - 1),
         status: 'host'
     });

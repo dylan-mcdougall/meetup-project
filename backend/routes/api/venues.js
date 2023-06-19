@@ -25,9 +25,13 @@ router.put('/:venueId', requireAuth, validateVenueBody, async (req, res, next) =
 
     const user = await Membership.findOne({
         where: { memberId: req.user.id, groupId: currGroup.id }
-    })
-    
-    if (currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+    });
+    if (!user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+    if (user && currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
         return res.status(403).json({
             message: "Forbidden"
         })
