@@ -292,17 +292,17 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
         endDate
     });
 
-    await Attendance.create({
-        userId: req.user.id,
-        groupId: currGroup.id,
-        status: 'host'
-    });
+    
 
     const payload = await Event.findOne({
         where: { name: name, description: description, startDate: startDate, endDate: endDate },
         attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'capacity', 'price', 'description', 'startDate', 'endDate']
     });
-
+    await Attendance.create({
+            userId: req.user.id,
+            eventId: payload.id,
+            status: 'host'
+        });
     return res.json(payload);
 })
 
