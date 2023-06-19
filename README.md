@@ -1385,7 +1385,8 @@ Request a new membership for a group specified by id.
   * Body:
 
     ```json
-    {
+    { 
+      "id": 5
       "memberId": 2,
       "status": "pending"
     }
@@ -1441,7 +1442,7 @@ Change the status of a membership for a group specified by id.
     * Current User must already be the organizer
 * Request
   * Method: PATCH
-  * URL: /api/groups/:groupId/members/:memberId
+  * URL: /api/groups/:groupId/members
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1531,7 +1532,7 @@ Delete a membership to a group specified by id.
   the user whose membership is being deleted
 * Request
   * Method: DELETE
-  * URL: /api/groups/:groupId/members/:memberId
+  * URL: /api/groups/:groupId/members
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1708,6 +1709,7 @@ Request attendance for an event specified by id.
 
     ```json
     {
+      "id": 5,
       "userId": 2,
       "status": "pending"
     }
@@ -1759,7 +1761,7 @@ Change the status of an attendance for an event specified by id.
   have a membership to the group with the status of "co-host"
 * Request
   * Method: PATCH
-  * URL: /api/events/:eventId/attendance/:attendanceId
+  * URL: /api/events/:eventId/attendance
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1831,7 +1833,7 @@ Delete an attendance to an event specified by id.
   the user whose attendance is being deleted
 * Request
   * Method: DELETE
-  * URL: /api/events/:eventId/attendance/:attendanceId
+  * URL: /api/events/:eventId/attendance
   * Headers:
     * Content-Type: application/json
   * Body:
