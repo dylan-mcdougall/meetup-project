@@ -136,7 +136,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
 
     const attendance = await Attendance.findOne({
-        where: { userId: req.body.userId, eventId: req.params.eventId }
+        where: { userId: req.user.id, eventId: req.params.eventId }
     });
     if (attendance && (attendance.status === "pending" || attendance.status === "waitlist")) {
         return res.status(400).json({
@@ -149,7 +149,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         })
     }
 
-    const user = await User.findByPk(req.body.userId);
+    const user = await User.findByPk(req.user.id);
     if (!user) {
         return res.status(404).json({
             message: "User doesn't exist"
@@ -157,13 +157,13 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
 
     await Attendance.create({
-        userId: req.body.userId,
+        userId: req.user.id,
         eventId: event.id,
         status: "pending"
     });
 
     const payload = await Attendance.findOne({
-        where: { userId: req.body.userId, eventId: req.params.eventId },
+        where: { userId: req.user.id, eventId: req.params.eventId },
         attributes: ['id', 'userId', 'status']
     });
 
