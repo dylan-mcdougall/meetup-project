@@ -59,7 +59,11 @@ router.get('/current/groups', requireAuth, async (req, res, next) => {
     const preview = await Image.findOne({
       where: { imageableId: target[i].id, preview: true, imageableType: 'Group' }
     });
-    target[i].dataValues.preview = preview.imageUrl
+    if (preview) {
+      target[i].dataValues.preview = preview.imageUrl;
+    } else {
+      target[i].dataValues.preview = null;
+    }
     payload.Groups.push(target[i]);
   }
 
