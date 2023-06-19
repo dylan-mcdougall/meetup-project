@@ -138,7 +138,7 @@ router.patch('/:groupId/members/:memberId', requireAuth, async (req, res, next) 
     });
 
     const payload = await Membership.findOne({
-        where: { memberId: req.params.memberId, groupId: req.params.groupId },
+        where: { memberId: req.body.memberId, groupId: req.params.groupId },
         attributes: ['id', 'groupId', 'memberId', 'status']
     });
 
