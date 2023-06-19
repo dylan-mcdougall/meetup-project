@@ -152,7 +152,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const user = await User.findByPk(req.user.id);
     if (!user) {
         return res.status(404).json({
-            message: "User doesn't exist"
+            message: "User is not signed in"
         })
     }
 
