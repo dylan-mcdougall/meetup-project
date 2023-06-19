@@ -85,7 +85,12 @@ router.patch('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const user = await Membership.findOne({
         where: { memberId: req.user.id, groupId: group.id }
     });
-    if (!user || (user.status !== 'co-host' && user.memberId !== group.organizerId)) {
+    if (!user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
+    if (user.status !== 'co-host' && user.memberId !== group.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
         });
