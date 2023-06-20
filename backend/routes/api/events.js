@@ -335,6 +335,11 @@ router.delete('/:eventId', requireAuth, async (req, res ,next) => {
     const user = await Membership.findOne({
         where: { memberId: req.user.id, groupId: currEvent.groupId }
     });
+    if (!user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
     if (user.memberId !== group.organizerId && user.status !== 'co-host' || !user) {
         return res.status(403).json({
             message: "Forbidden"

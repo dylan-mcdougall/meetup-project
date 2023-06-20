@@ -408,6 +408,11 @@ router.post('/:groupId/venues', requireAuth, validateVenueBody, async (req, res,
         where: { memberId: req.user.id, groupId: req.params.groupId }
     })
 
+    if (!user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
     if (!currGroup) {
         return res.status(404).json({
             message: "Group couldn't be found"
@@ -560,7 +565,7 @@ router.get('/', async (req, res, next) => {
         if (previewImage) {
             groups[i].dataValues.previewImage = previewImage.url;
         } else {
-            roups[i].dataValues.previewImage = null;
+            groups[i].dataValues.previewImage = null;
         }
         payload.Groups.push(groups[i]);
     }

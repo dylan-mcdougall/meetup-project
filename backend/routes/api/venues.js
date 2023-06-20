@@ -31,7 +31,7 @@ router.put('/:venueId', requireAuth, validateVenueBody, async (req, res, next) =
             message: "Forbidden"
         })
     }
-    if (user && currGroup.organizerId !== req.user.id && user.status !== 'co-host') {
+    if (user && (currGroup.organizerId !== req.user.id && (user.status !== 'co-host' && user.status !== 'host'))) {
         return res.status(403).json({
             message: "Forbidden"
         })
