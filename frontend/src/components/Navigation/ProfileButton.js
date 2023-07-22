@@ -39,11 +39,11 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
+        <li>Hello, {user.firstName} {user.lastName}</li>
         <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
         <li>
-          <button onClick={logout}>Log Out</button>
+          <button className="logout" onClick={logout}>Log Out</button>
         </li>
       </ul>
     </>
