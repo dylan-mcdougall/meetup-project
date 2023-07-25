@@ -20,7 +20,7 @@ function HomePage() {
                     <p className="Section-1-paragraph">Your new community is waiting for you. For 20+ years, millions of people have chosen Meetup to make real connections over shared interests. Start a group today with a 30-day free trial.</p>
                 </div>
                 <div className="Section-1-images">
-                    <p>placeholder for image</p>
+                    <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/iStock-group.jpg' alt='group-bonding'></img>
                 </div>
             </div>
             <div className="Section-2">
@@ -29,11 +29,13 @@ function HomePage() {
             </div>
             <div className="Section-3">
                 <div className="Section-3-column-1">
+                    <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/uynx_zeag_150109.jpg' alt='group-activities'></img>
                     <h3 className="Section-3-title-1">
                         <a href='#'>See all groups</a>
                     </h3>
                 </div>
                 <div className="Section-3-column-2">
+                    <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/S_2858_110412.jpg' alt='event-flyer'></img>
                 <h3 className="Section-3-title-2">
                         <a href='#'>Find an event</a>
                     </h3>
