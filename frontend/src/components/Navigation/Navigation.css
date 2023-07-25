@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: solid gray;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    height: 12vh;
+}
+
+ul.profile-dropdown.hidden {
+    display: none;
+}
+
+ul.profile-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    text-decoration: none;
+    list-style: none;
+    border: 2px black solid;
+    right: 2%;
+    top: 8%;
+    height: 12%;
+    background-color: white;
+    padding: 4px;
+}
+
+.logout {
+    background-color: white;
+    border: none;
+    border-top: 1px solid black;
+    font-size: 14px;
+    width: 100%;
+}
+
+.logout:hover {
+    color: gray;
+    cursor: pointer;
+}
+
+li.profile {
+    list-style: none;
+    text-decoration: none;
+    color: black;
+}
+
+li.session > a {
+    list-style: none;
+    text-decoration: none;
+    color: black;
+    padding: 24px;
+    font-size: 24px;
+}
+
+li.session {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+li.session > a:hover {
+    color: grey;
+}
+
+.Meetup > a {
+    text-decoration: none;
+    color: #f54251;
+    font-size: 36px;
+    font-weight: bold;
+    margin: 18px;
+    margin-top: 24px;
+}
+
+li.Meetup {
+    align-self: center;
+}
+
+.profile > button {
+    margin: 24px;
+    border: none;
+    font-size: 38px;
+    background-color: white;
+    color: #f54251;
+}
