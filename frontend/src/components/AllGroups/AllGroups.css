@@ -1,0 +1,79 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+div.Group-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.Groups-Events-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 18px;
+    margin: 18px;
+    font-size: 24px;
+}
+
+div.Groups-Events-links > h2 {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+h2.Groups-link > a {
+    color: teal;
+    text-decoration: underline;
+    pointer-events: none;
+}
+
+h2.Events-link > a {
+    color: grey;
+    text-decoration: none;
+}
+
+h2.Events-link > a:hover {
+    text-decoration: underline;
+}
+
+div.List-header {
+    padding: 18px;
+    padding-left: 40px;
+    margin: 18px;
+    color: grey;
+}
+
+ul.Groups-list-ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    max-width: 100vw;
+}
+
+li.Groups-list-li {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: auto;
+    width: 100vw;
+    border-top: 2px grey solid;
+    padding-top: 7vh;
+}
+
+li.Groups-list-li p:hover {
+    cursor: pointer;
+}
+
+li.Groups-list-li h2:hover {
+    cursor: pointer;
+}
+
+div.Groups-content-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}

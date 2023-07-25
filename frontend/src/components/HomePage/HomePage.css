@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+div.Landing-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+div.Section-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 24px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 24px;
+}
+
+div.Section-1-text {
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+}
+
+h2.Section-1-title {
+    font-size: 36pt;
+    font-weight: bold;
+}
+
+div.Section-1-images {
+    margin: 24px;
+    padding: 24px;
+}
+
+div.Section-1-images > img {
+    max-width: 450px;
+    height: auto;
+    border-radius: 30px;
+}
+
+p.Section-1-paragraph {
+    font-size: 18pt;
+}
+
+div.Section-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35vw;
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+h2.Section-2-title {
+    font-size: 22pt;
+    font-weight: bold;
+}  
+
+p.Section-2-paragraph {
+    font-size: 16pt;
+}
+
+div.Section-3 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px;
+    padding: 24px;
+}
+
+div.Section-3 > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px;
+    padding: 24px;
+}
+
+div.Section-3 a {
+    color: teal;
+    text-decoration: none;
+
+}
+
+div.Section-3 img {
+    height: auto;
+    max-width: 200px;
+    border-radius: 100px;
+    padding: 12px;
+}
+
+div.Section-3 a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+h3.Section-3-title-3.unauthorized > a {
+    color: grey;
+    pointer-events: none;
+}
+
+div.Section-4 {
+    margin: 24px;
+    padding: 24px;
+    align-self: center;
+}
+
+div.Section-4 > button {
+    font-size: 24px;
+    color: white;
+    background-color: #f54251;
+    box-shadow: black 12px;
+    padding: 14px;
+}
+
+div.Section-4 > button:hover {
+    cursor: pointer;
+}
