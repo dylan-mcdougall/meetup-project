@@ -31,7 +31,7 @@ function HomePage() {
                 <div className="Section-3-column-1">
                     <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/uynx_zeag_150109.jpg' alt='group-activities'></img>
                     <h3 className="Section-3-title-1">
-                        <a href='#'>See all groups</a>
+                        <a href='/groups'>See all groups</a>
                     </h3>
                 </div>
                 <div className="Section-3-column-2">
