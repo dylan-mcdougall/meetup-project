@@ -97,6 +97,10 @@ div.Section-3 img {
     padding: 12px;
 }
 
+div.Section-3-column-3 img {
+    max-width: 260px;
+}
+
 div.Section-3 a:hover {
     text-decoration: underline;
     cursor: pointer;

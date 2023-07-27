@@ -12,25 +12,25 @@ module.exports = {
     options.tableName = 'Images';
     return queryInterface.bulkInsert(options, [
       {
-        url: 'demo Url',
+        url: 'https://aaprojectbucket.s3.us-west-1.amazonaws.com/josephine-gasser-cv83wpGtFtg-unsplash.jpg',
         preview: true,
         imageableId: 1,
         imageableType: 'Event'
       },
       {
-        url: 'it me, demo',
+        url: 'https://aaprojectbucket.s3.us-west-1.amazonaws.com/joanna-kosinska-9WNi3OTzqtI-unsplash.jpg',
         preview: true,
         imageableId: 2,
         imageableType: 'Event'
       },
       {
-        url: 'Beep Boop',
+        url: 'https://aaprojectbucket.s3.us-west-1.amazonaws.com/jed-villejo-pumko2FFxY0-unsplash.jpg',
         preview: true,
         imageableId: 1,
         imageableType: 'Group'
       },
       {
-        url: 'other url here',
+        url: 'https://aaprojectbucket.s3.us-west-1.amazonaws.com/melanie-stander-olOlNIG6DmI-unsplash.jpg',
         preview: true,
         imageableId: 2,
         imageableType: 'Group'

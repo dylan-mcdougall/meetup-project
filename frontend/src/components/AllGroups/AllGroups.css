@@ -77,3 +77,8 @@ div.Groups-content-flex {
     flex-direction: row;
     align-items: flex-end;
 }
+
+div.Groups-content-flex img {
+    max-height: 250px;
+    width: auto;
+}

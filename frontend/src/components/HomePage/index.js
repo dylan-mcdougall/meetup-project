@@ -41,6 +41,7 @@ function HomePage() {
                     </h3>
                 </div>
                 <div className="Section-3-column-3">
+                    <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/2000_SkVNQSBHRVIgMTA0Ni0wNQ.jpg' alt='start a group'></img>
                     <h3 className={h3ClassName}>
                         <a href='#'>Start a new group</a>
                     </h3>

@@ -18,7 +18,7 @@ function GroupPage() {
             {groups.map((group) => (
                 <li className='Groups-list-li' key={group.id}>
                     <div className='Groups-content-flex'>
-                        <p href='#'>placeholder image</p>
+                        <img src={group.previewImage}></img>
                         <div className='Groups-text-flex'>
                             <h2 href='#'>{group.name}</h2>
                             <p href='#'>{group.city}, {group.state}</p>
