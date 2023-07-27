@@ -76,6 +76,8 @@ div.Groups-content-flex {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    margin: 24px;
+    padding: 24px;
 }
 
 div.Groups-content-flex img {
