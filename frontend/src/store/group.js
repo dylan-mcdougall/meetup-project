@@ -2,11 +2,18 @@ const LOAD_GROUPS = 'groups/LOAD_GROUPS';
 const RECEIVE_GROUP = 'groups/RECEIVE_GROUP';
 const UPDATE_GROUP = 'groups/UPDATE_GROUP';
 const REMOVE_GROUP = 'groups/REMOVE_GROUP';
+const LOAD_GROUP_EVENTS = 'groups/LOAD_GROUP_EVENTS';
 
 export const loadGroups = (groups) => ({
     type: LOAD_GROUPS,
     groups,
 });
+
+export const loadGroupEvents = (groupId, events) => ({
+    type: LOAD_GROUP_EVENTS,
+    groupId,
+    events,
+})
 
 export const receiveGroup = (group) => ({
     type: RECEIVE_GROUP,
@@ -31,6 +38,16 @@ export const fetchGroups = () => async (dispatch) => {
     dispatch(loadGroups(groups));
 }
 
+export const fetchGroupEvents = (groupId) => async (dispatch) => {
+    const res = await fetch(`/api/groups/${groupId}/events`);
+    if (res.ok) {
+        const events = await res.json();
+        dispatch(loadGroupEvents(groupId, events));
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
 
 
 const groupsReducer = (state = {}, action) => {
@@ -40,7 +57,11 @@ const groupsReducer = (state = {}, action) => {
             action.groups.Groups.forEach((group) => {
                 groupsState[group.id] = group;
             });
-            return groupsState
+            return groupsState;
+        case LOAD_GROUP_EVENTS:
+            const newState = { ...state };
+            newState[action.groupId].Events = action.events
+            return newState;
         default:
             return state;
     }

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroups } from '../../store/group';
+import { fetchGroups, fetchGroupEvents } from '../../store/group';
 import './AllGroups.css';
 
 function GroupPage() {
     const dispatch = useDispatch();
     const groups = Object.values(
-        useSelector((state) => (state.groups ? state.groups : []))
+        useSelector((state) => (state.groups ? state.groups : {}))
     )
-
+    
     useEffect(() => {
-        dispatch(fetchGroups());
+        dispatch(fetchGroups())
     }, [dispatch]);
 
     const groupsList = (
@@ -18,11 +18,22 @@ function GroupPage() {
             {groups.map((group) => (
                 <li className='Groups-list-li' key={group.id}>
                     <div className='Groups-content-flex'>
-                        <img src={group.previewImage}></img>
+                        <a href='#'>
+                            <img src={group.previewImage}></img>
+                        </a>
                         <div className='Groups-text-flex'>
-                            <h2 href='#'>{group.name}</h2>
-                            <p href='#'>{group.city}, {group.state}</p>
-                            <p href='#'>{group.about}</p>
+                            <h2>
+                                <a href='#'>{group.name}</a>
+                                </h2>
+                            <p>
+                                <a href='#'>{group.city}, {group.state}</a>
+                                </p>
+                            <p>
+                                <a href='#'>{group.about}</a>
+                                </p>
+                            <p>
+                                <a href='#'>Number of Events: {group.Events ? group.Events.length : 0}</a>
+                            </p>
                         </div>
                     </div>
                 </li>
@@ -32,21 +43,23 @@ function GroupPage() {
 
     return (
         <div className='Group-wrapper'>
-            <div className='Group-navigation'>
-                <div className='Groups-Events-links'>
-                    <h2 className='Events-link'>
-                        <a href='#'>Events</a>
-                    </h2>
-                    <h2 className='Groups-link'>
-                        <a href='#'>Groups</a>
-                    </h2>
+            <div className='Group-wrapper-flex'>
+                <div className='Group-navigation'>
+                    <div className='Groups-Events-links'>
+                        <h2 className='Events-link'>
+                            <a href='#'>Events</a>
+                        </h2>
+                        <h2 className='Groups-link'>
+                            <a href='#'>Groups</a>
+                        </h2>
+                    </div>
+                    <div className='List-header'>
+                        <h3>Groups in Meetup</h3>
+                    </div>
                 </div>
-                <div className='List-header'>
-                    <h3>Groups in Meetup</h3>
+                <div className='Groups-list-wrapper'>
+                    {groupsList}
                 </div>
-            </div>
-            <div className='Groups-list-wrapper'>
-                {groupsList}
             </div>
         </div>
     );
