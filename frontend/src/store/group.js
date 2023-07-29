@@ -49,6 +49,17 @@ export const fetchGroupEvents = (groupId) => async (dispatch) => {
     }
 }
 
+export const fetchGroupDetails = (groupId) => async (dispatch) => {
+    const res = await fetch(`/api/groups/${groupId}`);
+    if (res.ok) {
+        const details = await res.json();
+        dispatch(receiveGroup(details));
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
 
 const groupsReducer = (state = {}, action) => {
     switch (action.type) {
@@ -62,6 +73,8 @@ const groupsReducer = (state = {}, action) => {
             const newState = { ...state };
             newState[action.groupId].Events = action.events
             return newState;
+        case RECEIVE_GROUP:
+            return { ...state, [action.group.id]: action.group }
         default:
             return state;
     }
