@@ -18,21 +18,21 @@ function GroupPage() {
             {groups.map((group) => (
                 <li className='Groups-list-li' key={group.id}>
                     <div className='Groups-content-flex'>
-                        <a href='#'>
+                        <a href={`/groups/${group.id}`}>
                             <img src={group.previewImage}></img>
                         </a>
                         <div className='Groups-text-flex'>
                             <h2>
-                                <a href='#'>{group.name}</a>
+                                <a href={`/groups/${group.id}`}>{group.name}</a>
                                 </h2>
                             <p>
-                                <a href='#'>{group.city}, {group.state}</a>
+                                <a href={`/groups/${group.id}`}>{group.city}, {group.state}</a>
                                 </p>
                             <p>
-                                <a href='#'>{group.about}</a>
+                                <a href={`/groups/${group.id}`}>{group.about}</a>
                                 </p>
                             <p>
-                                <a href='#'>Number of Events: {group.Events ? group.Events.length : 0}</a>
+                                <a href={`/groups/${group.id}`}>Number of Events: {group.Events ? group.Events.length : 0}</a>
                             </p>
                         </div>
                     </div>

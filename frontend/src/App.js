@@ -7,6 +7,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import HomePage from './components/HomePage';
 import GroupPage from "./components/AllGroups";
+import GroupDetails from "./components/GroupDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,9 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignupFormPage />
+          </Route>
+          <Route path='/groups/:groupId'>
+            <GroupDetails />
           </Route>
           <Route path='/groups'>
             <GroupPage />
