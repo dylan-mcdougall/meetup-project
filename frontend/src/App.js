@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import HomePage from './components/HomePage';
 import GroupPage from "./components/AllGroups";
 import GroupDetails from "./components/GroupDetails";
+import EventPage from "./components/AllEvents";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignupFormPage />
+          </Route>
+          <Route path='/events'>
+            <EventPage />
           </Route>
           <Route path='/groups/:groupId'>
             <GroupDetails />
