@@ -46,10 +46,10 @@ function GroupPage() {
             <div className='Group-wrapper-flex'>
                 <div className='Group-navigation'>
                     <div className='Groups-Events-links'>
-                        <h2 className='Events-link'>
+                        <h2 className='Groups-Page-Events-link'>
                             <a href='#'>Events</a>
                         </h2>
-                        <h2 className='Groups-link'>
+                        <h2 className='Groups-Page-Groups-link'>
                             <a href='#'>Groups</a>
                         </h2>
                     </div>

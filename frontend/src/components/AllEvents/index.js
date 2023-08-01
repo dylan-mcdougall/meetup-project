@@ -46,10 +46,10 @@ function EventPage() {
             <div className='Event-wrapper-flex'>
                 <div className='Event-navigation'>
                     <div className='Groups-Events-links'>
-                        <h2 className='Events-link'>
+                        <h2 className='Events-Page-Events-link'>
                             <a href='#'>Events</a>
                         </h2>
-                        <h2 className='Groups-link'>
+                        <h2 className='Events-Page-Groups-link'>
                             <a href='#'>Groups</a>
                         </h2>
                     </div>
