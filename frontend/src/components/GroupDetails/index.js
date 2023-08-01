@@ -23,18 +23,24 @@ function GroupDetails() {
     }, [dispatch]);
 
     let EventList = null;
+    let EventListCount = 0;
     if (group && group.events && group.events.Events) {
+        EventListCount = group.events.Events.length;
         EventList = group.events.Events.map((event) => (
             <ul>
                 <li>
                     <div className='Event-placard-flex'>
                         <div className='Event-placard-top-level'>
-                            <img></img>
+                            <img src={event.previewImage}></img>
                             <div className='Event-placard-text'>
-
+                                <p className='Group-Event-Date-Time'>
+                                    <a href='#'>{event.startDate}</a>
+                                </p>
+                                <h3>{event.name}</h3>
+                                <h5>{event.Venue.city} {event.Venue.state}</h5>
                             </div>
                         </div>
-                        <p></p>
+                        <p>{event.about}</p>
                     </div>
                 </li>
             </ul>
@@ -76,7 +82,8 @@ function GroupDetails() {
                 </div>
                 <div className='Group-events-flex'>
                     <div className='Group-events'>
-                        <h3>Upcoming Events ({})</h3>
+                        <h3>Upcoming Events ({EventListCount})</h3>
+                        {EventList}
                     </div>
                 </div>
             </div>
