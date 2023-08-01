@@ -74,7 +74,11 @@ const groupsReducer = (state = {}, action) => {
             newState[action.groupId].Events = action.events
             return newState;
         case RECEIVE_GROUP:
-            return { ...state, [action.group.id]: action.group }
+            if (action.group) {
+                return { ...state, [action.group.id]: action.group }
+            } else {
+                return state;
+            }
         default:
             return state;
     }
