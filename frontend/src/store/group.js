@@ -70,12 +70,18 @@ const groupsReducer = (state = {}, action) => {
             });
             return groupsState;
         case LOAD_GROUP_EVENTS:
-            const newState = { ...state };
-            newState[action.groupId].Events = action.events
-            return newState;
+            if (action.events) {
+                const tempState = { ...state };
+                tempState[action.groupId].events = action.events
+                return tempState
+            } else {
+                return state;
+            }
         case RECEIVE_GROUP:
             if (action.group) {
-                return { ...state, [action.group.id]: action.group }
+                const newState = { ...state };
+                newState[action.group.id] = action.group
+                return newState;
             } else {
                 return state;
             }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroupDetails } from '../../store/group';
+import { fetchGroupDetails, fetchGroupEvents } from '../../store/group';
 import './GroupDetails.css';
 
 function GroupDetails() {
@@ -11,19 +11,46 @@ function GroupDetails() {
     const { groupId } = useParams();
 
     const group = groups[groupId];
-    const previewImage = group.GroupImages.find((el) => el.preview === true);
+
+    console.log(group);
 
     useEffect(() => {
-        dispatch(fetchGroupDetails(groupId));
+        dispatch(fetchGroupDetails(groupId))
     }, [dispatch]);
 
-    return (
+    useEffect(() => {
+        dispatch(fetchGroupEvents(groupId))
+    }, [dispatch]);
+
+    let EventList = null;
+    if (group && group.events && group.events.Events) {
+        EventList = group.events.Events.map((event) => (
+            <ul>
+                <li>
+                    <div className='Event-placard-flex'>
+                        <div className='Event-placard-top-level'>
+                            <img></img>
+                            <div className='Event-placard-text'>
+
+                            </div>
+                        </div>
+                        <p></p>
+                    </div>
+                </li>
+            </ul>
+        ))
+    }
+
+
+    if (!group) {
+        return null
+    } else return (
         <div className='Page-wrapper'>
             <div className='Page-wrapper-flex'>
                 <div className='Group-overview-flex'>
                     &gt; <a href='/api/groups'>Groups</a>
                     <div className='Group-overview'>
-                        <img src={previewImage.url}></img>
+                        <img src={group.GroupImages.find((el) => el.preview === true).url || "Loading..."}></img>
                     </div>
                 </div>
                 <div className='Group-highlights-flex'>
@@ -49,7 +76,7 @@ function GroupDetails() {
                 </div>
                 <div className='Group-events-flex'>
                     <div className='Group-events'>
-                        
+                        <h3>Upcoming Events ({})</h3>
                     </div>
                 </div>
             </div>
