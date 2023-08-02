@@ -29,6 +29,17 @@ export const fetchEvents = () => async (dispatch) => {
     dispatch(loadEvents(events));
 }
 
+export const fetchEventDetails = (eventId) => async (dispatch) => {
+    const res = await fetch(`/api/events/${eventId}`);
+    if (res.ok) {
+        const details = await res.json();
+        dispatch(receiveEvent(details));
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
 const eventsReducer = (state = {}, action) => {
     switch (action.type) {
         case LOAD_EVENTS:
@@ -37,6 +48,9 @@ const eventsReducer = (state = {}, action) => {
                 eventsState[event.id] = event;
             });
             return eventsState
+        case RECEIVE_EVENT:
+            const newState = { ...state };
+            newState[action.event.id] = action.event
         default:
             return state;
     }

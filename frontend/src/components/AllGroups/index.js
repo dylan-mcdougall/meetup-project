@@ -13,6 +13,14 @@ function GroupPage() {
         dispatch(fetchGroups())
     }, [dispatch]);
 
+    const groupPrivacy = (privacy) => {
+        if (privacy) {
+            return 'Private'
+        } else {
+            return 'Public'
+        }
+    }
+
     const groupsList = (
         <ul className='Groups-list-ul'>
             {groups.map((group) => (
@@ -32,7 +40,7 @@ function GroupPage() {
                                 <a href={`/groups/${group.id}`}>{group.about}</a>
                                 </p>
                             <p>
-                                <a href={`/groups/${group.id}`}>Number of Events: {group.Events ? group.Events.length : 0}</a>
+                                <a href={`/groups/${group.id}`}>Number of Events: {group.Events ? group.Events.length : 0} &#xb7; {groupPrivacy(group.private)}</a>
                             </p>
                         </div>
                     </div>
@@ -47,7 +55,7 @@ function GroupPage() {
                 <div className='Group-navigation'>
                     <div className='Groups-Events-links'>
                         <h2 className='Groups-Page-Events-link'>
-                            <a href='#'>Events</a>
+                            <a href='/events'>Events</a>
                         </h2>
                         <h2 className='Groups-Page-Groups-link'>
                             <a href='#'>Groups</a>

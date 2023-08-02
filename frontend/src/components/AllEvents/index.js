@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEvents } from '../../store/event';
+import { fetchEventDetails, fetchEvents } from '../../store/event';
 import './AllEvents.css';
 
 function EventPage() {
@@ -8,6 +8,9 @@ function EventPage() {
     const events = Object.values(
         useSelector((state) => (state.events ? state.events : {}))
     );
+
+    const eventIds = events.map((el) => el.id);
+    console.log(eventIds)
 
     useEffect(() => {
         dispatch(fetchEvents())
