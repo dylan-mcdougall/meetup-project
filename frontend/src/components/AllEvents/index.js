@@ -16,9 +16,13 @@ function EventPage() {
         dispatch(fetchEvents())
     }, [dispatch]);
 
-    const eventsList = (
-        <ul className='Events-list-ul'>
-            {events.map((event) => (
+    useEffect(() => {
+        eventIds.forEach(id => dispatch(fetchEventDetails(id)))
+    }, [dispatch,]);
+
+    let eventsList = null;
+    if (events) {
+        eventsList = events.map((event) => (
                 <li className='Events-list-li' key={event.id}>
                     <div className='Events-content-flex'>
                         <a href={`/events/${event.id}`}>
@@ -30,19 +34,20 @@ function EventPage() {
                             </p>
                             <h2>
                                 <a href={`/events/${event.id}`}>{event.name}</a>
-                                </h2>
+                            </h2>
                             <p>
-                                <a href={`/events/${event.id}`}>{event.city}, {event.state}</a>
-                                </p>
+                                <a href={`/events/${event.id}`}>{event.Group.city}, {event.Group.state}</a>
+                            </p>
                             <p>
-                                <a href={`/events/${event.id}`}>{event.description}</a>
-                                </p>
+                                <a href={`/events/${event.id}`}>{event.description || null}</a>
+                            </p>
                         </div>
                     </div>
                 </li>
-            ))}
-        </ul>
-    );
+            )
+        );
+    }
+
 
     return (
         <div className='Event-wrapper'>
@@ -61,7 +66,9 @@ function EventPage() {
                     </div>
                 </div>
                 <div className='Events-list-wrapper'>
-                    {eventsList}
+                    <ul className='Events-list-ul'>
+                        {eventsList}
+                    </ul>
                 </div>
             </div>
         </div>
