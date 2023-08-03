@@ -9,16 +9,9 @@ function EventPage() {
         useSelector((state) => (state.events ? state.events : {}))
     );
 
-    const eventIds = events.map((el) => el.id);
-    console.log(eventIds)
-
     useEffect(() => {
         dispatch(fetchEvents())
     }, [dispatch]);
-
-    useEffect(() => {
-        eventIds.forEach(id => dispatch(fetchEventDetails(id)))
-    }, [dispatch,]);
 
     let eventsList = null;
     if (events) {
