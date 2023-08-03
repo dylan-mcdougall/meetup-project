@@ -26,6 +26,7 @@ export const removeEvent = (eventId) => ({
 export const fetchEvents = () => async (dispatch) => {
     const res = await fetch('/api/events');
     const events = await res.json();
+
     const updatedEventsArray = await Promise.all(events.Events.map(async (event) => {
         const res = await fetch(`/api/events/${event.id}`);
         return await res.json();
@@ -34,11 +35,11 @@ export const fetchEvents = () => async (dispatch) => {
     const updatedEventsObject = {
         Events: []
     };
+
     updatedEventsArray.forEach((event) => {
         updatedEventsObject.Events[event.id] = event;
     });
 
-    console.log(updatedEventsObject);
     dispatch(loadEvents(updatedEventsObject));
 }
 

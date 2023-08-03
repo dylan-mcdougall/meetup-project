@@ -40,7 +40,7 @@ function GroupPage() {
                                 <a href={`/groups/${group.id}`}>{group.about}</a>
                                 </p>
                             <p>
-                                <a href={`/groups/${group.id}`}>Number of Events: {} &#xb7; {groupPrivacy(group.private)}</a>
+                                <a href={`/groups/${group.id}`}>Events(#) {group.Events.Events.length} &#xb7; {groupPrivacy(group.private)}</a>
                             </p>
                         </div>
                     </div>

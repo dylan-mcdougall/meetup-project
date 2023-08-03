@@ -35,7 +35,22 @@ export const removeGroup = (groupId) => ({
 export const fetchGroups = () => async (dispatch) => {
     const res = await fetch('/api/groups');
     const groups = await res.json();
-    dispatch(loadGroups(groups));
+
+    const updatedGroupsArray = await Promise.all(groups.Groups.map(async (group) => {
+        const res = await fetch(`/api/groups/${group.id}/events`);
+        group.Events = await res.json();
+        return group;
+    }));
+
+    const updatedGroupsObject = {
+        Groups: []
+    };
+
+    updatedGroupsArray.forEach((group) => {
+        updatedGroupsObject.Groups[group.id] = group;
+    });
+
+    dispatch(loadGroups(updatedGroupsObject));
 }
 
 export const fetchGroupEvents = (groupId) => async (dispatch) => {
@@ -69,14 +84,6 @@ const groupsReducer = (state = {}, action) => {
                 groupsState[group.id] = group;
             });
             return groupsState;
-        case LOAD_GROUP_EVENTS:
-            if (action.events) {
-                const tempState = { ...state };
-                tempState[action.groupId].events = action.events
-                return tempState
-            } else {
-                return state;
-            }
         case RECEIVE_GROUP:
             if (action.group) {
                 const newState = { ...state };
