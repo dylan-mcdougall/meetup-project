@@ -53,22 +53,16 @@ export const fetchGroups = () => async (dispatch) => {
     dispatch(loadGroups(updatedGroupsObject));
 }
 
-export const fetchGroupEvents = (groupId) => async (dispatch) => {
-    const res = await fetch(`/api/groups/${groupId}/events`);
-    if (res.ok) {
-        const events = await res.json();
-        dispatch(loadGroupEvents(groupId, events));
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
-
 export const fetchGroupDetails = (groupId) => async (dispatch) => {
     const res = await fetch(`/api/groups/${groupId}`);
+    const events = await fetch(`/api/groups/${groupId}/events`);
     if (res.ok) {
-        const details = await res.json();
-        dispatch(receiveGroup(details));
+        const groupDetails = await res.json();
+        const eventDetails = await events.json();
+
+        groupDetails.Events = eventDetails;
+        console.log(groupDetails);
+        dispatch(receiveGroup(groupDetails));
     } else {
         const errors = await res.json();
         return errors;

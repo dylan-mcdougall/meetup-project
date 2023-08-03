@@ -18,39 +18,30 @@ function GroupDetails() {
         dispatch(fetchGroupDetails(groupId))
     }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(fetchGroupEvents(groupId))
-    }, [dispatch]);
-
-    let EventList = null;
-    let EventListCount = 0;
-    if (group && group.events && group.events.Events) {
-        EventListCount = group.events.Events.length;
-        EventList = group.events.Events.map((event) => (
-            <ul>
-                <li>
-                    <div className='Event-placard-flex'>
-                        <div className='Event-placard-top-level'>
-                            <img src={event.previewImage}></img>
-                            <div className='Event-placard-text'>
-                                <p className='Group-Event-Date-Time'>
-                                    <a href='#'>{event.startDate}</a>
-                                </p>
-                                <h3>{event.name}</h3>
-                                <h5>{event.Venue.city} {event.Venue.state}</h5>
-                            </div>
-                        </div>
-                        <p>{event.about}</p>
-                    </div>
-                </li>
-            </ul>
-        ))
-    }
-
-
     if (!group) {
         return null
-    } else return (
+    }
+    const EventList = group.Events.Events.map((event) => (
+        <ul>
+            <li>
+                <div className='Event-placard-flex'>
+                    <div className='Event-placard-top-level'>
+                        <img src={event.previewImage}></img>
+                        <div className='Event-placard-text'>
+                            <p className='Group-Event-Date-Time'>
+                                <a href='#'>{event.startDate}</a>
+                            </p>
+                            <h3>{event.name}</h3>
+                            <h5>{event.Venue.city} {event.Venue.state}</h5>
+                        </div>
+                    </div>
+                    <p>{event.about}</p>
+                </div>
+            </li>
+        </ul>
+    ));
+
+    return (
         <div className='Page-wrapper'>
             <div className='Page-wrapper-flex'>
                 <div className='Group-overview-flex'>
@@ -82,7 +73,7 @@ function GroupDetails() {
                 </div>
                 <div className='Group-events-flex'>
                     <div className='Group-events'>
-                        <h3>Upcoming Events ({EventListCount})</h3>
+                        <h3>Upcoming Events ({group.Events.Events.length})</h3>
                         {EventList}
                     </div>
                 </div>
