@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroupDetails, fetchGroupEvents } from '../../store/group';
+import { fetchGroupDetails } from '../../store/group';
+import { fetchGroupMemberships } from '../../store/membership';
 import './GroupDetails.css';
 
 function GroupDetails() {
     const dispatch = useDispatch();
     const groups = useSelector((state) => (state.groups ? state.groups : {}));
-
+    const sessionUser = useSelector((state) => (state.session.user));
+    const groupMemberships = Object.values(useSelector((state) => (state.memberships ? state.memberships : {})));
+    let user;
+    if (groupMemberships) {
+        user = groupMemberships.find((el) => el.id === sessionUser.id);
+    } else {
+        user = 'Visitor'
+    }
     const { groupId } = useParams();
-
     const group = groups[groupId];
 
     console.log(group);
-
-    useEffect(() => {
-        dispatch(fetchGroupDetails(groupId))
-    }, [dispatch]);
+    console.log(sessionUser);
+    console.log(groupMemberships);
+    console.log(user);
 
     const groupPrivacy = (privacy) => {
         if (privacy) {
@@ -25,6 +31,37 @@ function GroupDetails() {
             return 'Public'
         }
     }
+
+    const incomingFeature = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        alert('Feature Coming Soon!')
+    }
+
+    let groupFunctionality;
+    if (group && user && group.organizerId === user.id) {
+        groupFunctionality = (
+            <div className='organizerFunctionality'>
+                <button>Create event</button>
+                <button>Update</button>
+                <button>Delete</button>
+            </div>
+        )
+    } else if (group && sessionUser && !user) {
+        groupFunctionality = (
+            <div className='visitorFunctionality'>
+                <button onClick={incomingFeature}>Join this group</button>
+            </div>
+        )
+    } else {
+        groupFunctionality = null;
+    }
+
+    useEffect(() => {
+        dispatch(fetchGroupDetails(groupId))
+        dispatch(fetchGroupMemberships(groupId))
+    }, [dispatch]);
+
 
     if (!group) {
         return null
@@ -40,7 +77,7 @@ function GroupDetails() {
                                 <a href='#'>{event.startDate}</a>
                             </p>
                             <h3>{event.name}</h3>
-                            <h5>{event.Venue.city} {event.Venue.state}</h5>
+                            <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
                         </div>
                     </div>
                     <p>{event.about}</p>
@@ -67,7 +104,7 @@ function GroupDetails() {
                             <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
                         </div>
                         <div className='Group-highlights-button'>
-                            <button>Join this group</button>
+                            {groupFunctionality}
                         </div>
                     </div>
                 </div>

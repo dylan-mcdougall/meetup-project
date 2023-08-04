@@ -61,7 +61,6 @@ export const fetchGroupDetails = (groupId) => async (dispatch) => {
         const eventDetails = await events.json();
 
         groupDetails.Events = eventDetails;
-        console.log(groupDetails);
         dispatch(receiveGroup(groupDetails));
     } else {
         const errors = await res.json();
