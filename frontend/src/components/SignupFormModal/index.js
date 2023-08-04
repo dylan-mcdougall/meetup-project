@@ -56,7 +56,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {(errors.email || errors.missing) && <p>{errors.email || errors.missing}</p>}
         <label>
           Username
           <input
