@@ -14,12 +14,14 @@ function Navigation({ isLoaded }){
   if (sessionUser) {
     sessionLinks = (
       <li className='profile'>
+        <NavLink to='/groups'>View Groups</NavLink>
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
       <li className='session'>
+        <NavLink to='/groups'>View Groups</NavLink>
         <OpenModalButton
         buttonText="Log In"
         modalComponent={<LoginFormModal />}
