@@ -51,7 +51,7 @@ function EventPage() {
                             <a href='#'>Events</a>
                         </h2>
                         <h2 className='Events-Page-Groups-link'>
-                            <a href='#'>Groups</a>
+                            <a href='/groups'>Groups</a>
                         </h2>
                     </div>
                     <div className='List-header'>

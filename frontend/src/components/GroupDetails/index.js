@@ -18,6 +18,14 @@ function GroupDetails() {
         dispatch(fetchGroupDetails(groupId))
     }, [dispatch]);
 
+    const groupPrivacy = (privacy) => {
+        if (privacy) {
+            return 'Private'
+        } else {
+            return 'Public'
+        }
+    }
+
     if (!group) {
         return null
     }
@@ -55,7 +63,7 @@ function GroupDetails() {
                         <div className='Group-highlights-text'>
                             <h2>{group.name}</h2>
                             <p>{group.city} {group.state}</p>
-
+                            <p>Events(#) {group.Events.Events.length} &#xb7; {groupPrivacy(group.private)}</p>
                             <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
                         </div>
                         <div className='Group-highlights-button'>
