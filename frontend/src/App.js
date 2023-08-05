@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import HomePage from './components/HomePage';
 import GroupPage from "./components/AllGroups";
 import GroupDetails from "./components/GroupDetails";
+import CreateGroupForm from "./components/CreateGroupForm";
 import EventPage from "./components/AllEvents";
 import EventDetails from "./components/EventDetails";
 
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path='/events'>
             <EventPage />
+          </Route>
+          <Route exact path='/groups/new'>
+            <CreateGroupForm />
           </Route>
           <Route path='/groups/:groupId'>
             <GroupDetails />

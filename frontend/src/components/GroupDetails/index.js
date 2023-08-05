@@ -63,40 +63,42 @@ function GroupDetails() {
     if (!group) {
         return null
     }
-
-    const eventsArray = dateSort(group.Events);
-    const EventList = eventsArray.map((event) => {
-        const eventDate = new Date(event.startDate);
-        const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
-        const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
-
-        const newDate = new Intl.DateTimeFormat('en-US', dateOptions).format(eventDate);
-        const newTime = new Intl.DateTimeFormat('en-US', timeOptions).format(eventDate);
-
-        const previewImage = event.EventImages.find((el) => el.preview === true)
-
-        return (
-        <ul key={event.id}>
-            <li>
-                <div className='Event-placard-flex'>
-                    <div className='Event-placard-top-level'>
-                    <a href='#'>
-                        {/* <img src={previewImage.url} /> */}
-                        </a>
-                        <div className='Event-placard-text'>
-                            <p className='Group-Event-Date-Time'>
-                                <a href='#'>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
-                            </p>
-                            <h3>{event.name}</h3>
-                            <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
+    let EventList;
+    if (group.Events) {
+        const eventsArray = dateSort(group.Events);
+        EventList = eventsArray.map((event) => {
+            const eventDate = new Date(event.startDate);
+            const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+            const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+    
+            const newDate = new Intl.DateTimeFormat('en-US', dateOptions).format(eventDate);
+            const newTime = new Intl.DateTimeFormat('en-US', timeOptions).format(eventDate);
+    
+            const previewImage = event.EventImages.find((el) => el.preview === true)
+    
+            return (
+            <ul key={event.id}>
+                <li>
+                    <div className='Event-placard-flex'>
+                        <div className='Event-placard-top-level'>
+                        <a href='#'>
+                            {/* <img src={previewImage.url} /> */}
+                            </a>
+                            <div className='Event-placard-text'>
+                                <p className='Group-Event-Date-Time'>
+                                    <a href='#'>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
+                                </p>
+                                <h3>{event.name}</h3>
+                                <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
+                            </div>
                         </div>
+                        <p>{event.description}</p>
                     </div>
-                    <p>{event.description}</p>
-                </div>
-            </li>
-        </ul>
-        );
-    });
+                </li>
+            </ul>
+            );
+        });
+    }
 
     return (
         <div className='Page-wrapper'>
@@ -112,8 +114,8 @@ function GroupDetails() {
                         <div className='Group-highlights-text'>
                             <h2>{group.name}</h2>
                             <p>{group.city} {group.state}</p>
-                            <p>Events ({group.Events.length}) &#xb7; {groupPrivacy(group.private)}</p>
-                            <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
+                            <p>Events ({group.Events ? group.Events.length : 0}) &#xb7; {groupPrivacy(group.private)}</p>
+                            <p>Organized by {group.Organizer ? group.Organizer.firstName : null} {group.Organizer ? group.Organizer.lastName : null}</p>
                         </div>
                         <div className='Group-highlights-button'>
                             {groupFunctionality}
@@ -123,15 +125,15 @@ function GroupDetails() {
                 <div className='Group-details-flex'>
                     <div className='Group-details'>
                         <h2>Organizer</h2>
-                        <h4>{group.Organizer.firstName} {group.Organizer.lastName}</h4>
+                        <h4>{group.Organizer ? group.Organizer.firstName : null} {group.Organizer ? group.Organizer.lastName : null}</h4>
                         <h3>What we're about</h3>
                         <p>{group.about}</p>
                     </div>
                 </div>
                 <div className='Group-events-flex'>
                     <div className='Group-events'>
-                        <h3>Events ({group.Events.length})</h3>
-                        {EventList}
+                        <h3>Events ({group.Events ? group.Events.length : 0})</h3>
+                        {group.Events ? EventList : null}
                     </div>
                 </div>
             </div>
