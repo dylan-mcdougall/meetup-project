@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEventDetails, fetchEvents } from '../../store/event';
+import { fetchEvents } from '../../store/event';
+
+import { dateSort } from '../../helperFunctions/Helper';
 import './AllEvents.css';
 
 function EventPage() {
@@ -13,9 +15,18 @@ function EventPage() {
         dispatch(fetchEvents())
     }, [dispatch]);
 
+    const eventsArray = dateSort(events);
     let eventsList = null;
     if (events) {
-        eventsList = events.map((event) => (
+        eventsList = eventsArray.map((event) => {
+            const eventDate = new Date(event.startDate);
+            const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+            const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+
+            const newDate = new Intl.DateTimeFormat('en-US', dateOptions).format(eventDate);
+            const newTime = new Intl.DateTimeFormat('en-US', timeOptions).format(eventDate);
+
+            return (
                 <li className='Events-list-li' key={event.id}>
                     <div className='Events-content-flex'>
                         <a href={`/events/${event.id}`}>
@@ -23,13 +34,13 @@ function EventPage() {
                         </a>
                         <div className='Events-text-flex'>
                             <p>
-                                <a href={`/events/${event.id}`}>{event.startDate}</a>
+                                <a href={`/events/${event.id}`}>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
                             </p>
                             <h2>
                                 <a href={`/events/${event.id}`}>{event.name}</a>
                             </h2>
                             <p>
-                                <a href={`/events/${event.id}`}>{event.Group.city}, {event.Group.state}</a>
+                                <a href={`/events/${event.id}`}>{event.Venue ? event.Venue.city : event.Group.city}, {event.Venue ? event.Venue.state : event.Group.state}</a>
                             </p>
                             <p>
                                 <a href={`/events/${event.id}`}>{event.description || null}</a>
@@ -38,7 +49,7 @@ function EventPage() {
                     </div>
                 </li>
             )
-        );
+        });
     }
 
 
