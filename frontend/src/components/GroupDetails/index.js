@@ -80,7 +80,9 @@ function GroupDetails() {
             <li>
                 <div className='Event-placard-flex'>
                     <div className='Event-placard-top-level'>
-                        <img src={previewImage.url}></img>
+                        <img src={previewImage.url}>
+                            <a href='#' />
+                        </img>
                         <div className='Event-placard-text'>
                             <p className='Group-Event-Date-Time'>
                                 <a href='#'>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
