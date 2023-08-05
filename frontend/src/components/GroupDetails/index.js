@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroupDetails } from '../../store/group';
 import { fetchGroupMemberships } from '../../store/membership';
+
+import { dateSort } from '../../helperFunctions/Helper';
 import './GroupDetails.css';
 
 function GroupDetails() {
@@ -11,18 +13,13 @@ function GroupDetails() {
     const sessionUser = useSelector((state) => (state.session.user));
     const groupMemberships = Object.values(useSelector((state) => (state.memberships ? state.memberships : {})));
     let user;
+
     if (groupMemberships) {
         user = groupMemberships.find((el) => el.id === sessionUser.id);
-    } else {
-        user = 'Visitor'
     }
+
     const { groupId } = useParams();
     const group = groups[groupId];
-
-    console.log(group);
-    console.log(sessionUser);
-    console.log(groupMemberships);
-    console.log(user);
 
     const groupPrivacy = (privacy) => {
         if (privacy) {
@@ -66,25 +63,38 @@ function GroupDetails() {
     if (!group) {
         return null
     }
-    const EventList = group.Events.Events.map((event) => (
-        <ul>
+
+    const eventsArray = dateSort(group.Events);
+    const EventList = eventsArray.map((event) => {
+        const eventDate = new Date(event.startDate);
+        const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+        const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+
+        const newDate = new Intl.DateTimeFormat('en-US', dateOptions).format(eventDate);
+        const newTime = new Intl.DateTimeFormat('en-US', timeOptions).format(eventDate);
+
+        const previewImage = event.EventImages.find((el) => el.preview === true)
+
+        return (
+        <ul key={event.id}>
             <li>
                 <div className='Event-placard-flex'>
                     <div className='Event-placard-top-level'>
-                        <img src={event.previewImage}></img>
+                        <img src={previewImage.url}></img>
                         <div className='Event-placard-text'>
                             <p className='Group-Event-Date-Time'>
-                                <a href='#'>{event.startDate}</a>
+                                <a href='#'>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
                             </p>
                             <h3>{event.name}</h3>
                             <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
                         </div>
                     </div>
-                    <p>{event.about}</p>
+                    <p>{event.description}</p>
                 </div>
             </li>
         </ul>
-    ));
+        );
+    });
 
     return (
         <div className='Page-wrapper'>
@@ -100,7 +110,7 @@ function GroupDetails() {
                         <div className='Group-highlights-text'>
                             <h2>{group.name}</h2>
                             <p>{group.city} {group.state}</p>
-                            <p>Events(#) {group.Events.Events.length} &#xb7; {groupPrivacy(group.private)}</p>
+                            <p>Events ({group.Events.length}) &#xb7; {groupPrivacy(group.private)}</p>
                             <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
                         </div>
                         <div className='Group-highlights-button'>
@@ -118,7 +128,7 @@ function GroupDetails() {
                 </div>
                 <div className='Group-events-flex'>
                     <div className='Group-events'>
-                        <h3>Upcoming Events ({group.Events.Events.length})</h3>
+                        <h3>Events ({group.Events.length})</h3>
                         {EventList}
                     </div>
                 </div>
