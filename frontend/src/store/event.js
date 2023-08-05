@@ -1,5 +1,5 @@
 const LOAD_EVENTS = 'events/LOAD_EVENTS';
-const RECEIVE_EVENT = 'events/RECEIVE_GROUP';
+const RECEIVE_EVENT = 'events/RECEIVE_EVENT';
 const UPDATE_EVENT = 'events/UPDATE_EVENT';
 const REMOVE_EVENT = 'events/REMOVE_EVENT';
 

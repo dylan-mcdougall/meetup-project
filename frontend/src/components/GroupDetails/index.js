@@ -7,6 +7,14 @@ import { fetchGroupMemberships } from '../../store/membership';
 import { dateSort } from '../../helperFunctions/Helper';
 import './GroupDetails.css';
 
+export const groupPrivacy = (privacy) => {
+    if (privacy) {
+        return 'Private'
+    } else {
+        return 'Public'
+    }
+}
+
 function GroupDetails() {
     const dispatch = useDispatch();
     const groups = useSelector((state) => (state.groups ? state.groups : {}));
@@ -20,14 +28,6 @@ function GroupDetails() {
 
     const { groupId } = useParams();
     const group = groups[groupId];
-
-    const groupPrivacy = (privacy) => {
-        if (privacy) {
-            return 'Private'
-        } else {
-            return 'Public'
-        }
-    }
 
     const incomingFeature = (e) => {
         e.preventDefault();
@@ -80,9 +80,9 @@ function GroupDetails() {
             <li>
                 <div className='Event-placard-flex'>
                     <div className='Event-placard-top-level'>
-                        <img src={previewImage.url}>
-                            <a href='#' />
-                        </img>
+                    <a href='#'>
+                        {/* <img src={previewImage.url} /> */}
+                        </a>
                         <div className='Event-placard-text'>
                             <p className='Group-Event-Date-Time'>
                                 <a href='#'>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
@@ -102,9 +102,9 @@ function GroupDetails() {
         <div className='Page-wrapper'>
             <div className='Page-wrapper-flex'>
                 <div className='Group-overview-flex'>
-                    &gt; <a href='/api/groups'>Groups</a>
+                    &gt; <a href='/groups'>Groups</a>
                     <div className='Group-overview'>
-                        <img src={group.GroupImages.find((el) => el.preview === true).url || "Loading..."}></img>
+                        {/* <img src={group.GroupImages.find((el) => el.preview === true).url || "Loading..."}></img> */}
                     </div>
                 </div>
                 <div className='Group-highlights-flex'>
