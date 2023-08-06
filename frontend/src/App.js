@@ -9,6 +9,7 @@ import HomePage from './components/HomePage';
 import GroupPage from "./components/AllGroups";
 import GroupDetails from "./components/GroupDetails";
 import CreateGroupForm from "./components/CreateGroupForm";
+import UpdateGroupForm from "./components/UpdateGroupForm";
 import EventPage from "./components/AllEvents";
 import EventDetails from "./components/EventDetails";
 import CreateEventForm from "./components/CreateEventForm";
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path='/groups/:groupId/events/new'>
             <CreateEventForm />
+          </Route>
+          <Route path='/groups/:groupId/update'>
+            <UpdateGroupForm />
           </Route>
           <Route exact path='/groups/new'>
             <CreateGroupForm />
