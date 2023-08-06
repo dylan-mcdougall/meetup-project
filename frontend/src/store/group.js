@@ -114,6 +114,18 @@ export const updateGroupAction = (groupId, group) => async (dispatch) => {
         const errors = await res.json();
         return errors;
     }
+};
+
+export const deleteGroupAction = (groupId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/groups/${groupId}`, {method: 'DELETE'});
+    if (res.ok) {
+        const confirmation = await res.json();
+        dispatch(removeGroup(groupId));
+        return confirmation;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
 }
 
 
@@ -137,6 +149,10 @@ const groupsReducer = (state = {}, action) => {
             return { ...state, [action.group.id]: action.group };
         case UPDATE_GROUP:
             return { ...state, [action.group.id]: action.group };
+        case REMOVE_GROUP:
+            const newState = { ...state };
+            delete newState[action.groupId];
+            return newState;
         default:
             return state;
     }

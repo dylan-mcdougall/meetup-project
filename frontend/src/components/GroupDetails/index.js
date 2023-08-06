@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroupDetails } from '../../store/group';
 import { fetchGroupMemberships } from '../../store/membership';
+import OpenModalButton from '../OpenModalButton';
+import DeleteGroupModal from '../DeleteGroupModal';
 
 import { dateSort } from '../../helperFunctions/Helper';
 import './GroupDetails.css';
@@ -41,7 +43,9 @@ function GroupDetails() {
             <div className='organizerFunctionality'>
                 <button>Create event</button>
                 <button>Update</button>
-                <button>Delete</button>
+                <OpenModalButton 
+                buttonText="Delete"
+                modalComponent={<DeleteGroupModal groupId={groupId} />}/>
             </div>
         )
     } else if (group && sessionUser && !user) {
