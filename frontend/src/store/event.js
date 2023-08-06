@@ -78,7 +78,19 @@ export const createEventAction = (groupId, event) => async (dispatch) => {
         const errors = await res.json();
         return errors;
     }
-}
+};
+
+export const deleteEventAction = (eventId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/events/${eventId}`, { method: 'DELETE' });
+    if (res.ok) {
+        const confirmation = await res.json();
+        dispatch(removeEvent(eventId));
+        return confirmation;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+};
 
 const eventsReducer = (state = {}, action) => {
     switch (action.type) {
@@ -92,6 +104,10 @@ const eventsReducer = (state = {}, action) => {
             return { ...state, [action.event.id]: action.event };
         case CREATE_EVENT:
             return { ...state, [action.event.id]: action.event };
+        case REMOVE_EVENT:
+            const newState = { ...state };
+            delete newState[action.eventId];
+            return newState;
         default:
             return state;
     }

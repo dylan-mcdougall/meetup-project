@@ -5,6 +5,10 @@ import { groupPrivacy } from '../GroupDetails';
 import { fetchEventDetails } from '../../store/event';
 import { fetchGroupDetails } from '../../store/group';
 import { fetchGroupMemberships } from '../../store/membership';
+
+import OpenModalButton from '../OpenModalButton';
+import DeleteEventModal from '../DeleteEventModal';
+
 import './EventDetails.css';
 
 function EventDetails() {
@@ -41,7 +45,9 @@ function EventDetails() {
         hostFunctionality = (
             <div className='hostFunctionality'>
                 <button>Update</button>
-                <button>Delete</button>
+                <OpenModalButton 
+                buttonText="Delete"
+                modalComponent={<DeleteEventModal groupId={event.groupId} eventId={eventId} />}/>
             </div>
         )
     }
