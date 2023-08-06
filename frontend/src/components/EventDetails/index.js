@@ -47,13 +47,13 @@ function EventDetails() {
     }
 
     let previewImage;
-    if (event) {
+    if (event && event.EventImages) {
         previewImage = event.EventImages.find((el) => el.preview === true)
     }
 
     const eventPrice = (price) => {
         if (price > 0) {
-            return '$' + `${price.toFixed(2)}`;
+            return `$${price.toFixed(2)}`;
         } else {
             return "FREE";
         }

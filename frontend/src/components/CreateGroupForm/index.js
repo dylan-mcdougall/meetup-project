@@ -49,7 +49,7 @@ function CreateGroupForm() {
         }
 
         if (!type || type === "") {
-            errors.type = "Please specify whether your group is onling or in person."
+            errors.type = "Please specify whether your group is online or in person."
         }
 
         if (!privacy || privacy === "") {
@@ -133,12 +133,12 @@ function CreateGroupForm() {
                             <li>2. Who should join?</li>
                             <li>3. What will you do at your events?</li>
                         </ol>
-                        <input type='field'
-                            name='description'
-                            placeholder='Please write at least 30 characters'
+                        <textarea
+                            name='about'
+                            placeholder='Please include at least 30 characters'
                             value={about}
                             onChange={(e) => setAbout(e.target.value)}
-                        />
+                            />
                         <p className='errors.about'>{errors.about}</p>
                     </div>
                 </div>

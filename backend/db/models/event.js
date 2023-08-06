@@ -69,7 +69,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     capacity: {
       type: DataTypes.INTEGER,
-      allowNull: false
     },
     price: {
       type: DataTypes.NUMERIC,

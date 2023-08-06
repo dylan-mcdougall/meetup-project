@@ -38,7 +38,6 @@ module.exports = {
       },
       capacity: {
         type: Sequelize.INTEGER,
-        allowNull: false
       },
       price: {
         type: Sequelize.NUMERIC,
