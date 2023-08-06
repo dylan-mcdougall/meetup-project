@@ -57,7 +57,7 @@ function GroupDetails() {
     useEffect(() => {
         dispatch(fetchGroupDetails(groupId))
         dispatch(fetchGroupMemberships(groupId))
-    }, [dispatch]);
+    }, [dispatch, sessionUser]);
 
 
     if (!group) {
