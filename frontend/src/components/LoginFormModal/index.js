@@ -11,16 +11,43 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const validate = () => {
+    const newErrors = {};
+
+    if (!credential) {
+      newErrors.credential = "Username or email is required."
+    }
+
+    if (credential.length < 4) {
+      newErrors.credential = "Username or email must be 4 characters or longer."
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required."
+    }
+
+    if (password.length < 6) {
+      newErrors.password = "Password must be 6 characters or longer."
+    }
+
+    return newErrors;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors({});
-    return dispatch(sessionActions.login({ credential, password }))
-    .then(closeModal)
-    .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      }
-    );
+    const validationErrors = validate();
+    if (!Object.keys(validationErrors).length) {
+      setErrors({});
+      return dispatch(sessionActions.login({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
+          const data = await res.json();
+          if (data && data.errors) setErrors(data.errors);
+        }
+      );
+    } else {
+      setErrors(validationErrors);
+    }
   };
 
   const demoUser = () => {
@@ -47,6 +74,7 @@ function LoginFormModal() {
             required
           />
         </label>
+        {errors.credential && <p>{errors.credential}</p>}
         <label>
           Password
           <input
@@ -56,8 +84,10 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        {errors.password && <p>{errors.password}</p>}
+        <button type="submit"
+        disabled={Object.keys(validate()).length > 0}
+        >Log In</button>
         <button onClick={demoUser}>Log in as Demo User</button>
       </form>
     </>

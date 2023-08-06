@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { createGroupAction, fetchGroups } from '../../store/group';
 import './CreateGroupForm.css';
 
 function CreateGroupForm() {
     const dispatch = useDispatch();
-    const groups = Object.values(
-        useSelector((state) => (state.groups ? state.groups : {}))
-    );
 
     const [location, setLocation] = useState('');
     const [name, setName] = useState('');
@@ -25,7 +22,7 @@ function CreateGroupForm() {
         dispatch(fetchGroups());
     }, []);
 
-    useEffect(() => {
+    const validate = () => {
         const errors = {};
 
         if (!location) {
@@ -60,29 +57,33 @@ function CreateGroupForm() {
             errors.image = "Please include a valid image URL."
         }
 
-        setErrors(errors);
-    }, [location, name, about, type, privacy, imageUrl]);
+        return errors;
+    };
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
         const [city, state] = location.split(',')
-
-        try {
-            const res = await dispatch(createGroupAction({
-                name: name,
-                about: about,
-                type: type,
-                private: privacy,
-                city: city,
-                state: state
-            }));
-            if (res) {
-                console.log(res);
-                history.push(`/groups/${res.id}`);
+        const validationErrors = validate();
+        if (!Object.keys(validationErrors).length) {
+            try {
+                const res = await dispatch(createGroupAction({
+                    name: name,
+                    about: about,
+                    type: type,
+                    private: privacy,
+                    city: city,
+                    state: state
+                }));
+                if (res) {
+                    console.log(res);
+                    history.push(`/groups/${res.id}`);
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
+        } else {
+            setErrors(validationErrors)
         }
     }
 
@@ -106,7 +107,7 @@ function CreateGroupForm() {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
-                        <p className='errors.location'>{errors.location}</p>
+                        {errors.location && <p className='errors.location'>{errors.location}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -121,7 +122,7 @@ function CreateGroupForm() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <p className='errors.name'>{errors.name}</p>
+                        {errors.name && <p className='errors.name'>{errors.name}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -139,7 +140,7 @@ function CreateGroupForm() {
                             value={about}
                             onChange={(e) => setAbout(e.target.value)}
                             />
-                        <p className='errors.about'>{errors.about}</p>
+                        {errors.about && <p className='errors.about'>{errors.about}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -158,6 +159,8 @@ function CreateGroupForm() {
                                     <option value={"Online"}>Online</option>
                                 </select>
                             </label>
+                                {errors.type && <p className='errors.type'>{errors.type}</p>}
+
                             <label>
                                 Is this group private or public?
                                 <select
@@ -170,6 +173,7 @@ function CreateGroupForm() {
                                     <option value={false}>Public</option>
                                 </select>
                             </label>
+                                {errors.privacy && <p className='errors.privacy'>{errors.privacy}</p>}
                             <label>
                                 Please add an image URL for your group below.
                                 <input type='text'
@@ -178,9 +182,7 @@ function CreateGroupForm() {
                                     onChange={(e) => setImageUrl(e.target.value)}
                                 />
                             </label>
-                            <p className='errors.type'>{errors.type}</p>
-                            <p className='errors.privacy'>{errors.privacy}</p>
-                            <p className='errors.image'>{errors.image}</p>
+                            {errors.image && <p className='errors.image'>{errors.image}</p>}
                         </div>
                     </div>
                 </div>

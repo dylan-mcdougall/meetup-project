@@ -28,7 +28,7 @@ function CreateEventForm() {
         dispatch(fetchGroupDetails(groupId))
     }, []);
 
-    useEffect(() => {
+    const validate = () => {
         const errors = {};
 
         if (!name) {
@@ -59,16 +59,17 @@ function CreateEventForm() {
             errors.description = "Description must be at least 30 characters long."
         }
 
-        setErrors(errors);
-    }, [name, type, startDate, endDate, imageUrl, description]);
+        return errors;
+    }
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        const updatedStartDate = dateTimeAmPm(startDate);
-        const updatedEndDate = dateTimeAmPm(endDate);
-
-        try {
+        const validationErrors = validate();
+        if (!Object.keys(validationErrors).length) {
+            const updatedStartDate = dateTimeAmPm(startDate);
+            const updatedEndDate = dateTimeAmPm(endDate);
+            try {
             const res = await dispatch(createEventAction(groupId, {
                 name: name,
                 type: type,
@@ -84,6 +85,9 @@ function CreateEventForm() {
             }
         } catch (error) {
             console.log(error);
+        }
+        } else {
+            setErrors(validationErrors);
         }
     }
 
@@ -108,6 +112,7 @@ function CreateEventForm() {
                             onChange={(e) => setName(e.target.value)}
                         />
                         </label>
+                        {errors.name && <p className='errors'>{errors.name}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -124,6 +129,7 @@ function CreateEventForm() {
                                     <option value={"Online"}>Online</option>
                                 </select>
                         </label>
+                        {errors.type && <p className='errors'>{errors.type}</p>}
                     </div>
                     <div className='Create-event-form-price'>
                         <input type='number'
@@ -132,6 +138,7 @@ function CreateEventForm() {
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                         />
+                    {errors.price && <p className='errors'>{errors.price}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -145,6 +152,7 @@ function CreateEventForm() {
                                 onChange={(e) => setStartDate(e.target.value)}
                             />
                         </label>
+                        {errors.startDate && <p className='errors'>{errors.startDate}</p>}
                     </div>
                     <div className='Create-event-form-endDate'>
                         <label>
@@ -156,6 +164,7 @@ function CreateEventForm() {
                             onChange={(e) => setEndDate(e.target.value)}
                             />
                         </label>
+                        {errors.endDate && <p className='errors'>{errors.endDate}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -169,6 +178,7 @@ function CreateEventForm() {
                             onChange={(e) => setImageUrl(e.target.value)}
                             />
                         </label>
+                        {errors.image && <p className='errors'>{errors.image}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -182,6 +192,7 @@ function CreateEventForm() {
                             onChange={(e) => setDescription(e.target.value)}
                             />
                         </label>
+                        {errors.description && <p className='errors'>{errors.description}</p>}
                     </div>
                 </div>
                 <button type='submit'>Create Event</button>
