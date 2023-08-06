@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroupDetails } from '../../store/group';
 import { fetchGroupMemberships } from '../../store/membership';
@@ -19,6 +19,7 @@ export const groupPrivacy = (privacy) => {
 
 function GroupDetails() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const groups = useSelector((state) => (state.groups ? state.groups : {}));
     const sessionUser = useSelector((state) => (state.session.user));
     const groupMemberships = Object.values(useSelector((state) => (state.memberships ? state.memberships : {})));
@@ -37,12 +38,24 @@ function GroupDetails() {
         alert('Feature Coming Soon!')
     }
 
+    const createEventFunctionality = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        history.push(`/groups/${groupId}/events/new`)
+    };
+
+    const updateGroupFunctionality = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        history.push(`/groups/${groupId}/update`)
+    }
+
     let groupFunctionality;
     if (group && user && group.organizerId === user.id) {
         groupFunctionality = (
             <div className='organizerFunctionality'>
-                <button>Create event</button>
-                <button>Update</button>
+                <button onClick={createEventFunctionality}>Create event</button>
+                <button onClick={updateGroupFunctionality}>Update</button>
                 <OpenModalButton 
                 buttonText="Delete"
                 modalComponent={<DeleteGroupModal groupId={groupId} />}/>
@@ -85,18 +98,26 @@ function GroupDetails() {
                 <li>
                     <div className='Event-placard-flex'>
                         <div className='Event-placard-top-level'>
-                        <a href='#'>
+                        <a href={`/events/${event.id}`}>
                             {/* <img src={previewImage.url} /> */}
                             </a>
                             <div className='Event-placard-text'>
                                 <p className='Group-Event-Date-Time'>
-                                    <a href='#'>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</a>
+                                    <a href={`/events/${event.id}`}>
+                                        <p>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</p>
+                                    </a>
                                 </p>
+                                <a href={`/events/${event.id}`}>
                                 <h3>{event.name}</h3>
+                                </a>
+                                <a href={`/events/${event.id}`}>
                                 <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
+                                </a>
                             </div>
                         </div>
+                        <a href={`/events/${event.id}`}>
                         <p>{event.description}</p>
+                        </a>
                     </div>
                 </li>
             </ul>

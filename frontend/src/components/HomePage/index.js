@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import * as sessionActions from "../../store/session";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
 import './HomePage.css';
 
 function HomePage() {
@@ -37,13 +35,13 @@ function HomePage() {
                 <div className="Section-3-column-2">
                     <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/S_2858_110412.jpg' alt='event-flyer'></img>
                 <h3 className="Section-3-title-2">
-                        <a href='#'>Find an event</a>
+                        <a href='/events'>Find an event</a>
                     </h3>
                 </div>
                 <div className="Section-3-column-3">
                     <img src='https://aaprojectbucket.s3.us-west-1.amazonaws.com/2000_SkVNQSBHRVIgMTA0Ni0wNQ.jpg' alt='start a group'></img>
                     <h3 className={h3ClassName}>
-                        <a href='#'>Start a new group</a>
+                        <a href='/groups/new'>Start a new group</a>
                     </h3>
                 </div>
             </div>

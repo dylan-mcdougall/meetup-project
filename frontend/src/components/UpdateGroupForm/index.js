@@ -8,6 +8,7 @@ import './UpdateGroupForm.css';
 function UpdateGroupForm() {
     const dispatch = useDispatch();
     const groups = useSelector((state) => (state.groups ? state.groups : {}));
+    const sessionUser = useSelector((state) => state.session.user);
 
     const { groupId } = useParams();
     const group = groups[groupId];
@@ -97,15 +98,21 @@ function UpdateGroupForm() {
             console.log(error);
         }
     }
-    
-    return (
+
+    if (group) {
+        if (!sessionUser || sessionUser.id !== group.organizerId) {
+            history.push('/');
+            return;
+        }
+    }
+    if (group) return (
         <form
         className='Update-group-form'
         onSubmit={onSubmit}
         >
             <div className='Update-group-form-wrapper'>
                 <div className='Update-group-form-title'>
-                    <h2>Start a New Group</h2>
+                    <h2>Update your Group</h2>
                 </div>
                 <div className='Section'>
                     <div className='Update-group-form-location'>
