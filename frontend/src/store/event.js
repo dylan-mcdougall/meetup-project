@@ -63,7 +63,7 @@ export const fetchEventDetails = (eventId) => async (dispatch) => {
 }
 
 export const createEventAction = (groupId, event) => async (dispatch) => {
-    const res = await window.csrfFetch(`/api/groups/${groupId}/events`, {
+    const res = await csrfFetch(`/api/groups/${groupId}/events`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export const createEventAction = (groupId, event) => async (dispatch) => {
 };
 
 export const deleteEventAction = (eventId) => async (dispatch) => {
-    const res = await window.csrfFetch(`/api/events/${eventId}`, { method: 'DELETE' });
+    const res = await csrfFetch(`/api/events/${eventId}`, { method: 'DELETE' });
     if (res.ok) {
         const confirmation = await res.json();
         dispatch(removeEvent(eventId));
