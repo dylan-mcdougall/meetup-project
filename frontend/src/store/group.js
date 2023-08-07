@@ -90,7 +90,6 @@ export const fetchGroupDetails = (groupId) => async (dispatch) => {
 }
 
 export const createGroupAction = (group) => async (dispatch) => {
-    console.log(group);
     const res = await csrfFetch('/api/groups', {
         method: 'POST',
         headers: {
@@ -100,7 +99,6 @@ export const createGroupAction = (group) => async (dispatch) => {
     });
     if (res.ok) {
         const createdGroup = await res.json();
-        console.log(createdGroup);
         dispatch(createGroup(createdGroup));
         return createdGroup;
     } else {
