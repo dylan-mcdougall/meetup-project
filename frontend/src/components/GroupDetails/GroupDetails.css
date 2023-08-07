@@ -9,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-div.Page-wrapper {
+div.Group-page-wrapper {
     padding: 36px 72px;
     display: flex;
     flex-direction: column;
@@ -75,7 +75,7 @@ div.visitorFunctionality > button {
     box-shadow: 2px 2px black;
 }
 
-div.Page-wrapper-flex {
+div.Group-page-wrapper-flex {
     margin-bottom: 48px;
     padding: 12px 72px 36px;
     display: flex;

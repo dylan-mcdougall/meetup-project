@@ -97,29 +97,31 @@ function GroupDetails() {
                 <ul key={event.id}>
                     <li>
                         <div className='Event-placard-flex'>
-                            <div className='Event-placard-top-level'>
-                                <a href={`/events/${event.id}`}>
-                                    <img src={previewImage.url} />
-                                </a>
-                                <div className='Event-placard-text'>
-                                    <p className='Group-Event-Date-Time'>
-                                        <a href={`/events/${event.id}`}>
-                                            <p>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</p>
-                                        </a>
-                                    </p>
+                            <a href={`/events/${event.id}`}>
+                                <div className='Event-placard-top-level'>
                                     <a href={`/events/${event.id}`}>
-                                        <h3>{event.name}</h3>
+                                        <img src={previewImage.url} />
                                     </a>
+                                    <div className='Event-placard-text'>
+                                        <p className='Group-Event-Date-Time'>
+                                            <a href={`/events/${event.id}`}>
+                                                <p>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</p>
+                                            </a>
+                                        </p>
+                                        <a href={`/events/${event.id}`}>
+                                            <h3>{event.name}</h3>
+                                        </a>
+                                        <a href={`/events/${event.id}`}>
+                                            <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className='Event-placard-description'>
                                     <a href={`/events/${event.id}`}>
-                                        <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
+                                        <p>{event.description}</p>
                                     </a>
                                 </div>
-                            </div>
-                            <div className='Event-placard-description'>
-                            <a href={`/events/${event.id}`}>
-                                <p>{event.description}</p>
                             </a>
-                            </div>
                         </div>
                     </li>
                 </ul>
@@ -129,7 +131,7 @@ function GroupDetails() {
 
     return (
         <>
-            <div className='Page-wrapper'>
+            <div className='Group-page-wrapper'>
                 <div className='Group-breadcrumb'>
                     <p>&lt; <a href='/groups'>Groups</a></p>
                 </div>
@@ -148,7 +150,7 @@ function GroupDetails() {
                     </div>
                 </div>
             </div>
-            <div className='Page-wrapper-flex'>
+            <div className='Group-page-wrapper-flex'>
                 <div className='Group-details'>
                     <div className='Group-organizer'>
                         <h2>Organizer</h2>
