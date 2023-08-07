@@ -31,7 +31,7 @@ function EventDetails() {
     }
 
     let groupPreviewImage;
-    if (group) {
+    if (group && group.GroupImages && group.GroupImages.length) {
         groupPreviewImage = group.GroupImages.find((el) => el.preview === true);
     }
 
@@ -114,7 +114,7 @@ function EventDetails() {
                     <div className='Event-highlight-details'>
                         <div className='Event-Group-details'>
                         <a href={group ? `/groups/${group.id}` : null}>
-                            <img src={group ? groupPreviewImage.url : null}></img>
+                            <img src={groupPreviewImage ? groupPreviewImage.url : null}></img>
                             <div className='Event-Group-details-flex'>
                             <div className='Event-Group-details-text'>
                                 <h4>{group ? group.name : null}</h4>
