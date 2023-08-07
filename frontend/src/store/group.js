@@ -108,7 +108,7 @@ export const createGroupAction = (group) => async (dispatch) => {
 };
 
 export const updateGroupAction = (groupId, group) => async (dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}`, {
+    const res = await csrfFetch(`/api/groups/${(groupId).toString()}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
