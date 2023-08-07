@@ -81,9 +81,9 @@ function SignupFormModal() {
   };
 
   return (
-    <>
+    <div className="Signup-form">
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="Signup-form-css" onSubmit={handleSubmit}>
         <label>
           Email
           <input
@@ -93,7 +93,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {(errors.email || errors.missing) && <p>{errors.email || errors.missing}</p>}
+        {(errors.email || errors.missing) && <p className="errors">{errors.email || errors.missing}</p>}
         <label>
           Username
           <input
@@ -103,7 +103,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className="errors">{errors.username}</p>}
         <label>
           First Name
           <input
@@ -113,7 +113,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className="errors">{errors.firstName}</p>}
         <label>
           Last Name
           <input
@@ -123,7 +123,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className="errors">{errors.lastName}</p>}
         <label>
           Password
           <input
@@ -133,7 +133,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="errors">{errors.password}</p>}
         <label>
           Confirm Password
           <input
@@ -143,11 +143,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit"
+        {errors.confirmPassword && <p className="errors">{errors.confirmPassword}</p>}
+        <button className="Signup-submit" type="submit"
         disabled={Object.keys(validate()).length > 0}>Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

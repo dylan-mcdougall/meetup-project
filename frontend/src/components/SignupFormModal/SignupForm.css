@@ -1,0 +1,55 @@
+form > h1 {
+    font-size: 36px;
+}
+
+div.Signup-form {
+    padding: 14px;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+}
+
+div.Signup-form > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+form.Signup-form-css > label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 18px;
+    font-size: 16px;
+}
+
+form.Signup-form-css > label > input {
+    padding: 4px;
+    width: 100%;
+    border-radius: 0;
+    border: 2px solid black;
+}
+
+form.Signup-form-css > button {
+    margin: 14px;
+    padding: 4px;
+    width: 90%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+form > button.Signup-submit {
+    color: white;
+    background-color: red;
+    box-shadow: 3px 3px black;
+}
+
+p.errors {
+    color: red;
+}
