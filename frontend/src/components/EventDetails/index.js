@@ -53,7 +53,7 @@ function EventDetails() {
     }
 
     let previewImage;
-    if (event && event.EventImages) {
+    if (event && event.EventImages && event.EventImages.length) {
         previewImage = event.EventImages.find((el) => el.preview === true)
     }
 
