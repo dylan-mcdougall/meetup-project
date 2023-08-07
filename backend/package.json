@@ -4,6 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "sequelize": "sequelize",
+    "sequelize-cli": "sequelize-cli",
+    "start": "per-env",
+    "start:development": "nodemon ./bin/www",
+    "start:production": "node ./bin/www",
+    "build": "node psql-setup-script.js",
+    "resetdb": "npx dotenv sequelize-cli db:seed:undo:all && npx dotenv sequelize-cli db:migrate:undo:all && npx dotenv sequelize-cli db:migrate && npx dotenv sequelize-cli db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -29,6 +36,7 @@
   },
   "devDependencies": {
     "dotenv-cli": "^7.2.1",
+    "nodemon": "^2.0.22",
     "sqlite3": "^5.1.6"
   }
 }
