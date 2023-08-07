@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroups, fetchGroupEvents } from '../../store/group';
+import { fetchGroups } from '../../store/group';
 import './AllGroups.css';
 
 function GroupPage() {
@@ -26,25 +26,25 @@ function GroupPage() {
             <ul className='Groups-list-ul'>
                 {groups.map((group) => (
                     <li className='Groups-list-li' key={group.id}>
-                        <div className='Groups-content-flex'>
-                            <a href={`/groups/${group.id}`}>
+                        <a href={`/groups/${group.id}`}>
+                            <div className='Groups-content-flex'>
                                 <img src={group.previewImage}></img>
-                            </a>
-                            <div className='Groups-text-flex'>
-                                <h2>
-                                    <a href={`/groups/${group.id}`}>{group.name}</a>
-                                </h2>
-                                <p>
-                                    <a href={`/groups/${group.id}`}>{group.city}, {group.state}</a>
-                                </p>
-                                <p>
-                                    <a href={`/groups/${group.id}`}>{group.about}</a>
-                                </p>
-                                <p>
-                                    <a href={`/groups/${group.id}`}>Events({group.Events.Events ? group.Events.Events.length : null})  &#xb7; {groupPrivacy(group.private)}</a>
-                                </p>
+                                <div className='Groups-text-flex'>
+                                    <h2>
+                                        {group.name}
+                                    </h2>
+                                    <p>
+                                        {group.city}, {group.state}
+                                    </p>
+                                    <p>
+                                        {group.about}
+                                    </p>
+                                    <p>
+                                        Events({group.Events.Events ? group.Events.Events.length : null})  &#xb7; {groupPrivacy(group.private)}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </li>
                 ))}
             </ul>
