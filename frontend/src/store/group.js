@@ -90,7 +90,7 @@ export const fetchGroupDetails = (groupId) => async (dispatch) => {
 }
 
 export const createGroupAction = (group) => async (dispatch) => {
-    const res = await csrfFetch('/api/groups', {
+    const res = await window.csrfFetch('/api/groups', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export const createGroupAction = (group) => async (dispatch) => {
 };
 
 export const updateGroupAction = (groupId, group) => async (dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}`, {
+    const res = await window.csrfFetch(`/api/groups/${groupId}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
@@ -126,7 +126,7 @@ export const updateGroupAction = (groupId, group) => async (dispatch) => {
 };
 
 export const deleteGroupAction = (groupId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}`, { method: 'DELETE' });
+    const res = await window.csrfFetch(`/api/groups/${groupId}`, { method: 'DELETE' });
     if (res.ok) {
         const confirmation = await res.json();
         dispatch(removeGroup(groupId));
