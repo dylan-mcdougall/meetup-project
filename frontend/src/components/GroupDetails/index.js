@@ -87,54 +87,54 @@ function GroupDetails() {
             const eventDate = new Date(event.startDate);
             const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
             const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
-    
+
             const newDate = new Intl.DateTimeFormat('en-US', dateOptions).format(eventDate);
             const newTime = new Intl.DateTimeFormat('en-US', timeOptions).format(eventDate);
-    
+
             const previewImage = event.EventImages.find((el) => el.preview === true)
-    
+
             return (
-            <ul key={event.id}>
-                <li>
-                    <div className='Event-placard-flex'>
-                        <div className='Event-placard-top-level'>
-                        <a href={`/events/${event.id}`}>
-                            {/* <img src={previewImage.url} /> */}
-                            </a>
-                            <div className='Event-placard-text'>
-                                <p className='Group-Event-Date-Time'>
+                <ul key={event.id}>
+                    <li>
+                        <div className='Event-placard-flex'>
+                            <div className='Event-placard-top-level'>
+                                <a href={`/events/${event.id}`}>
+                                    <img src={previewImage.url} />
+                                </a>
+                                <div className='Event-placard-text'>
+                                    <p className='Group-Event-Date-Time'>
+                                        <a href={`/events/${event.id}`}>
+                                            <p>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</p>
+                                        </a>
+                                    </p>
                                     <a href={`/events/${event.id}`}>
-                                        <p>{`${newDate} ${String.fromCharCode(0x00B7)} ${newTime}`}</p>
+                                        <h3>{event.name}</h3>
                                     </a>
-                                </p>
-                                <a href={`/events/${event.id}`}>
-                                <h3>{event.name}</h3>
-                                </a>
-                                <a href={`/events/${event.id}`}>
-                                <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
-                                </a>
+                                    <a href={`/events/${event.id}`}>
+                                        <h5>{event.Venue ? event.Venue.city : group.city} {event.Venue ? event.Venue.state : group.state}</h5>
+                                    </a>
+                                </div>
+                            </div>
+                            <div className='Event-placard-description'>
+                            <a href={`/events/${event.id}`}>
+                                <p>{event.description}</p>
+                            </a>
                             </div>
                         </div>
-                        <a href={`/events/${event.id}`}>
-                        <p>{event.description}</p>
-                        </a>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
             );
         });
     }
 
     return (
-        <div className='Page-wrapper'>
-            <div className='Page-wrapper-flex'>
-                <div className='Group-overview-flex'>
-                    &gt; <a href='/groups'>Groups</a>
-                    <div className='Group-overview'>
-                        {/* <img src={group.GroupImages.find((el) => el.preview === true).url || "Loading..."}></img> */}
-                    </div>
+        <>
+            <div className='Page-wrapper'>
+                <div className='Group-breadcrumb'>
+                    <p>&lt; <a href='/groups'>Groups</a></p>
                 </div>
-                <div className='Group-highlights-flex'>
+                <div className='Group-overview'>
+                    <img src={group.GroupImages.find((el) => el.preview === true).url || "Loading..."}></img>
                     <div className='Group-highlights'>
                         <div className='Group-highlights-text'>
                             <h2>{group.name}</h2>
@@ -147,22 +147,24 @@ function GroupDetails() {
                         </div>
                     </div>
                 </div>
-                <div className='Group-details-flex'>
-                    <div className='Group-details'>
+            </div>
+            <div className='Page-wrapper-flex'>
+                <div className='Group-details'>
+                    <div className='Group-organizer'>
                         <h2>Organizer</h2>
                         <h4>{group.Organizer ? group.Organizer.firstName : null} {group.Organizer ? group.Organizer.lastName : null}</h4>
+                    </div>
+                    <div className='Group-about-field'>
                         <h3>What we're about</h3>
                         <p>{group.about}</p>
                     </div>
                 </div>
-                <div className='Group-events-flex'>
-                    <div className='Group-events'>
-                        <h3>Events ({group.Events ? group.Events.length : 0})</h3>
-                        {group.Events ? EventList : null}
-                    </div>
+                <div className='Group-events'>
+                    <h3>Events ({group.Events ? group.Events.length : 0})</h3>
+                    {group.Events ? EventList : null}
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

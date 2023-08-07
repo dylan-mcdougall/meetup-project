@@ -1,0 +1,169 @@
+div#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+div.Page-wrapper {
+    padding: 36px 72px;
+    display: flex;
+    flex-direction: column;
+}
+
+div.Group-overview {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 24px;
+}
+
+div.Group-overview > img {
+    max-width: 400px;
+    height: auto;
+    margin: 0;
+}
+
+div.Group-highlights {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 24px;
+    width: 100%;
+}
+
+div.Group-highlights-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 24px;
+}
+
+div.Group-highlights-text > p {
+    font-size: 20px;
+}
+
+div.Group-highlights-text > h2 {
+    font-size: 24px;
+    font-weight: bold;
+    word-wrap: normal;
+}
+
+div.organizerFunctionality {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+div.organizerFunctionality > button {
+    font-size: 18px;
+    padding: 6px;
+    background-color: darkgray;
+    box-shadow: 2px 2px black;
+}
+
+div.visitorFunctionality > button {
+    font-size: 18px;
+    padding: 6px;
+    color: white;
+    background-color: red;
+    box-shadow: 2px 2px black;
+}
+
+div.Page-wrapper-flex {
+    margin-bottom: 48px;
+    padding: 12px 72px 36px;
+    display: flex;
+    flex-direction: column;
+    background-color: lightgrey;
+    flex: 1;
+}
+
+div.Group-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+div.Group-organizer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 4px;
+    margin: 12px 0;
+}
+
+div.Group-organizer > h2 {
+    font-size: 28px;
+}
+
+div.Group-organizer > h4 {
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+div.Group-about-field {
+    display: flex;
+    flex-direction: column;
+    margin: 12px 0 24px;
+}
+
+div.Group-events {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+div.Event-placard-flex {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 22px;
+    width: 100%;
+    padding: 12px;
+}
+div.Event-placard-top-level {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+}
+
+div.Event-placard-text {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+div.Event-placard-text p {
+    font-size: 18px;
+}
+
+div.Event-placard-top-level h3 {
+    font-size: 28px;
+    font-weight: bold;
+    word-wrap: normal;
+}
+
+div.Event-placard-text h5 {
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+div.Event-placard-top-level img {
+    max-width: 350px;
+    height: auto;
+}
+
+div.Event-placard-flex a {
+    color: black;
+    text-decoration: none;
+}
+
+div.Event-placard-description {
+    padding: 12px;
+}
