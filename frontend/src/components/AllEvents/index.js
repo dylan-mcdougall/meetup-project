@@ -26,11 +26,16 @@ function EventPage() {
             const newDate = new Intl.DateTimeFormat('en-US', dateOptions).format(eventDate);
             const newTime = new Intl.DateTimeFormat('en-US', timeOptions).format(eventDate);
 
+            let previewImage;
+            if (event.EventImages) {
+                previewImage = event.EventImages.find((el) => el.preview === true);
+            }
+
             return (
                 <li className='Events-list-li' key={event.id}>
                     <div className='Events-content-flex'>
                         <a href={`/events/${event.id}`}>
-                            <img src={event.previewImage}></img>
+                            <img src={previewImage ? previewImage.url : null}></img>
                         </a>
                         <div className='Events-text-flex'>
                             <p>
