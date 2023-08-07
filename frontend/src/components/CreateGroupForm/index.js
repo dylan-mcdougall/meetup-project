@@ -79,6 +79,7 @@ function CreateGroupForm() {
                     state: state
                 }));
                 if (res) {
+                    console.log(res);
                     history.push(`/groups/${(res.id).toString()}`);
                 }
             } catch (error) {
