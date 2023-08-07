@@ -86,7 +86,7 @@ function UpdateGroupForm() {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        const [city, state] = location.split(',')
+        const [city, state] = location.split(', ')
         const validationErrors = validate();
         if (!Object.keys(validationErrors).length) {
             try {
