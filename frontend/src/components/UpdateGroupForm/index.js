@@ -90,7 +90,7 @@ function UpdateGroupForm() {
         const validationErrors = validate();
         if (!Object.keys(validationErrors).length) {
             try {
-                const res = await dispatch(updateGroupAction({
+                const res = await dispatch(updateGroupAction(groupId, {
                     name: name,
                     about: about,
                     type: type,
@@ -99,7 +99,7 @@ function UpdateGroupForm() {
                     state: state
                 }));
                 if (res) {
-                    history.push(`/groups/${res.id}`);
+                    history.push(`/groups/${groupId}`);
                 }
             } catch (error) {
                 return error;
@@ -215,7 +215,7 @@ function UpdateGroupForm() {
                 </div>
                 <button className='Submit-button'
                 type='submit'
-                >Create Group</button>
+                >Update Group</button>
             </div>
         </form>
     )
