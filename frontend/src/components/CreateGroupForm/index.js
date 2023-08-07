@@ -53,10 +53,6 @@ function CreateGroupForm() {
             errors.privacy = "Please specify whether your group is private or public."
         }
 
-        if (!imageUrl) {
-            errors.imageUrl = "Please include a valid image URL."
-        }
-
         if (imageUrl) {
             const testUrl = imageUrl.split('.');
             if (testUrl[testUrl.length - 1] !== 'jpg' && testUrl[testUrl.length - 1] !== 'png' && testUrl[testUrl.length - 1] !== 'jpeg') {
@@ -83,7 +79,6 @@ function CreateGroupForm() {
                     state: state
                 }));
                 if (res) {
-                    console.log(res);
                     history.push(`/groups/${res.id}`);
                 }
             } catch (error) {

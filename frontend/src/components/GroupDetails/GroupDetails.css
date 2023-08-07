@@ -7,6 +7,7 @@ div#root {
 body {
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 div.Group-page-wrapper {
@@ -81,7 +82,6 @@ div.Group-page-wrapper-flex {
     display: flex;
     flex-direction: column;
     background-color: lightgrey;
-    flex: 1;
 }
 
 div.Group-details {
@@ -119,13 +119,14 @@ div.Group-events {
     height: 100%;
 }
 
-div.Event-placard-flex {
+li.Event-placard {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: lightblue;
     border-radius: 22px;
-    width: 100%;
+    width: 50%;
     padding: 12px;
+    margin: 18px;
 }
 div.Event-placard-top-level {
     display: flex;
@@ -159,11 +160,16 @@ div.Event-placard-top-level img {
     height: auto;
 }
 
-div.Event-placard-flex a {
+li.Event-placard a {
     color: black;
     text-decoration: none;
 }
 
 div.Event-placard-description {
     padding: 12px;
+}
+
+div.Group-events ul {
+    display: flex;
+    flex-direction: column;
 }

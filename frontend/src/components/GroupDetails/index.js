@@ -22,12 +22,6 @@ function GroupDetails() {
     const history = useHistory();
     const groups = useSelector((state) => (state.groups ? state.groups : {}));
     const sessionUser = useSelector((state) => (state.session.user));
-    const groupMemberships = Object.values(useSelector((state) => (state.memberships ? state.memberships : {})));
-    let user;
-
-    if (groupMemberships) {
-        user = groupMemberships.find((el) => el.id === sessionUser.id);
-    }
 
     const { groupId } = useParams();
     const group = groups[groupId];
@@ -51,7 +45,7 @@ function GroupDetails() {
     }
 
     let groupFunctionality;
-    if (group && user && group.organizerId === user.id) {
+    if (group && sessionUser && group.organizerId === sessionUser.id) {
         groupFunctionality = (
             <div className='organizerFunctionality'>
                 <button onClick={createEventFunctionality}>Create event</button>
@@ -61,7 +55,7 @@ function GroupDetails() {
                 modalComponent={<DeleteGroupModal groupId={groupId} />}/>
             </div>
         )
-    } else if (group && sessionUser && !user) {
+    } else if (group && sessionUser && group.organizerId !== sessionUser.id) {
         groupFunctionality = (
             <div className='visitorFunctionality'>
                 <button onClick={incomingFeature}>Join this group</button>
@@ -94,9 +88,7 @@ function GroupDetails() {
             const previewImage = event.EventImages.find((el) => el.preview === true)
 
             return (
-                <ul key={event.id}>
-                    <li>
-                        <div className='Event-placard-flex'>
+                    <li className='Event-placard' key={event.id}>
                             <a href={`/events/${event.id}`}>
                             <div className='Event-placard-top-level'>
                                 <a href={`/events/${event.id}`}>
@@ -122,10 +114,7 @@ function GroupDetails() {
                                     <p>{event.description}</p>
                                 </a>
                             </div>
-
-                        </div>
                     </li>
-                </ul>
             );
         });
     }
@@ -137,7 +126,7 @@ function GroupDetails() {
                     <p>&lt; <a href='/groups'>Groups</a></p>
                 </div>
                 <div className='Group-overview'>
-                    <img src={group.GroupImages ? group.GroupImages.find((el) => el.preview === true).url : "Loading..."}></img>
+                    <img src={group.GroupImages && group.GroupImages.length ? group.GroupImages.find((el) => el.preview === true).url : null}></img>
                     <div className='Group-highlights'>
                         <div className='Group-highlights-text'>
                             <h2>{group.name}</h2>
@@ -164,7 +153,9 @@ function GroupDetails() {
                 </div>
                 <div className='Group-events'>
                     <h3>Events ({group.Events ? group.Events.length : 0})</h3>
+                    <ul>
                     {group.Events ? EventList : null}
+                    </ul>
                 </div>
             </div>
         </>

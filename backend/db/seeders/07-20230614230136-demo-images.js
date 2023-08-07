@@ -24,7 +24,7 @@ module.exports = {
         imageableType: 'Event'
       },
       {
-        url: 'https://aaprojectbucket.s3.us-west-1.amazonaws.com/jed-villejo-pumko2FFxY0-unsplash.jpg',
+        url: 'https://aaprojectbucket.s3.us-west-1.amazonaws.com/iStock-1524932039.jpg',
         preview: true,
         imageableId: 1,
         imageableType: 'Group'

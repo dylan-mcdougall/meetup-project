@@ -236,9 +236,9 @@ router.get('/:groupId/members', async (req, res, next) => {
 });
 
 router.post('/:groupId/images', requireAuth, async (req, res, next) => {
-    const { url, preview } = req.body;
-    if (preview === 'true') preview = true;
-    else if (preview === 'false') preview = false;
+    let { url, preview } = req.body;
+    if (preview === "true") preview = true;
+    else if (preview === "false") preview = false;
 
     const currGroup = await Group.findByPk(req.params.groupId);
 
