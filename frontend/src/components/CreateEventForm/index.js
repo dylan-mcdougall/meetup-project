@@ -55,6 +55,13 @@ function CreateEventForm() {
             errors.imageUrl = "Please include a valid image URL."
         }
 
+        if (imageUrl) {
+            const testUrl = imageUrl.split('.');
+            if (testUrl[testUrl.length - 1] !== 'jpg' && testUrl[testUrl.length - 1] !== 'png' && testUrl[testUrl.length - 1] !== 'jpeg') {
+                errors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
+            }
+        }
+
         if (description.length < 30) {
             errors.description = "Description must be at least 30 characters long."
         }
@@ -84,7 +91,7 @@ function CreateEventForm() {
                 history.push(`/events/${res.id}`)
             }
         } catch (error) {
-            console.log(error);
+            return error;
         }
         } else {
             setErrors(validationErrors);
@@ -132,6 +139,8 @@ function CreateEventForm() {
                         {errors.type && <p className='errors'>{errors.type}</p>}
                     </div>
                     <div className='Create-event-form-price'>
+                        <label>
+                            What is the price of your event?
                         <input type='number'
                         name='price'
                         placeholder={0}
@@ -139,6 +148,7 @@ function CreateEventForm() {
                         onChange={(e) => setPrice(e.target.value)}
                         />
                     {errors.price && <p className='errors'>{errors.price}</p>}
+                    </label>
                     </div>
                 </div>
                 <div className='Section'>
@@ -178,13 +188,13 @@ function CreateEventForm() {
                             onChange={(e) => setImageUrl(e.target.value)}
                             />
                         </label>
-                        {errors.image && <p className='errors'>{errors.image}</p>}
+                        {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
                     </div>
                 </div>
                 <div className='Section'>
                     <div className='Create-event-form-description'>
                         <label>
-                            Please describe your event
+                            Please describe your event:
                             <textarea
                             name='description'
                             placeholder='Please include at least 30 characters'
@@ -195,7 +205,7 @@ function CreateEventForm() {
                         {errors.description && <p className='errors'>{errors.description}</p>}
                     </div>
                 </div>
-                <button type='submit'>Create Event</button>
+                <button className='Submit-button' type='submit'>Create Event</button>
             </div>
         </form>
     )

@@ -54,7 +54,14 @@ function CreateGroupForm() {
         }
 
         if (!imageUrl) {
-            errors.image = "Please include a valid image URL."
+            errors.imageUrl = "Please include a valid image URL."
+        }
+
+        if (imageUrl) {
+            const testUrl = imageUrl.split('.');
+            if (testUrl[testUrl.length - 1] !== 'jpg' && testUrl[testUrl.length - 1] !== 'png' && testUrl[testUrl.length - 1] !== 'jpeg') {
+                errors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
+            }
         }
 
         return errors;
@@ -80,7 +87,7 @@ function CreateGroupForm() {
                     history.push(`/groups/${res.id}`);
                 }
             } catch (error) {
-                console.log(error);
+                return error;
             }
         } else {
             setErrors(validationErrors)
@@ -107,7 +114,7 @@ function CreateGroupForm() {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
-                        {errors.location && <p className='errors.location'>{errors.location}</p>}
+                        {errors.location && <p className='errors'>{errors.location}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -122,7 +129,7 @@ function CreateGroupForm() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        {errors.name && <p className='errors.name'>{errors.name}</p>}
+                        {errors.name && <p className='errors'>{errors.name}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -140,7 +147,7 @@ function CreateGroupForm() {
                             value={about}
                             onChange={(e) => setAbout(e.target.value)}
                             />
-                        {errors.about && <p className='errors.about'>{errors.about}</p>}
+                        {errors.about && <p className='errors'>{errors.about}</p>}
                     </div>
                 </div>
                 <div className='Section'>
@@ -159,7 +166,7 @@ function CreateGroupForm() {
                                     <option value={"Online"}>Online</option>
                                 </select>
                             </label>
-                                {errors.type && <p className='errors.type'>{errors.type}</p>}
+                                {errors.type && <p className='errors'>{errors.type}</p>}
 
                             <label>
                                 Is this group private or public?
@@ -173,8 +180,8 @@ function CreateGroupForm() {
                                     <option value={false}>Public</option>
                                 </select>
                             </label>
-                                {errors.privacy && <p className='errors.privacy'>{errors.privacy}</p>}
-                            <label>
+                                {errors.privacy && <p className='errors'>{errors.privacy}</p>}
+                            <label className='Create-group-form-image'>
                                 Please add an image URL for your group below.
                                 <input type='text'
                                     placeholder='Image Url'
@@ -182,11 +189,11 @@ function CreateGroupForm() {
                                     onChange={(e) => setImageUrl(e.target.value)}
                                 />
                             </label>
-                            {errors.image && <p className='errors.image'>{errors.image}</p>}
+                            {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
                         </div>
                     </div>
                 </div>
-                <button
+                <button className='Submit-button'
                 type='submit'
                 >Create Group</button>
             </div>

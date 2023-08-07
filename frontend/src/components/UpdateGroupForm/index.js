@@ -38,64 +38,75 @@ function UpdateGroupForm() {
         }
     }, [group]);
 
-    useEffect(() => {
+    const validate = () => {
         const errors = {};
-        
+
         if (!location) {
             errors.location = "Location is required.";
         }
-        
+
         if (location.split(',').length !== 2) {
             errors.location = "Please enter location in the format of City, STATE";
         }
-        
+
         if (!name) {
             errors.name = "Group name is required."
         }
-        
+
         if (!about) {
             errors.about = "Description for your group is required."
         }
-        
+
         if (about.length < 30) {
             errors.about = "Description must be at least 30 characters long."
         }
-        
+
         if (!type || type === "") {
             errors.type = "Please specify whether your group is online or in person."
         }
-        
+
         if (!privacy || privacy === "") {
             errors.privacy = "Please specify whether your group is private or public."
         }
-        
+
         if (!imageUrl) {
-            errors.image = "Please include a valid image URL."
+            errors.imageUrl = "Please include a valid image URL."
         }
-        
-        setErrors(errors);
-    }, [location, name, about, type, privacy, imageUrl]);
+
+        if (imageUrl) {
+            const testUrl = imageUrl.split('.');
+            if (testUrl[testUrl.length - 1] !== 'jpg' && testUrl[testUrl.length - 1] !== 'png' && testUrl[testUrl.length - 1] !== 'jpeg') {
+                errors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
+            }
+        }
+
+        return errors;
+    };
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        
+
         const [city, state] = location.split(',')
-        
-        try {
-            const res = await dispatch(updateGroupAction(groupId, {
-                name: name,
-                about: about,
-                type: type,
-                private: privacy,
-                city: city,
-                state: state
-            }));
-            if (res) {
-                console.log(res);
-                history.push(`/groups/${res.id}`);
+        const validationErrors = validate();
+        if (!Object.keys(validationErrors).length) {
+            try {
+                const res = await dispatch(updateGroupAction({
+                    name: name,
+                    about: about,
+                    type: type,
+                    private: privacy,
+                    city: city,
+                    state: state
+                }));
+                if (res) {
+                    console.log(res);
+                    history.push(`/groups/${res.id}`);
+                }
+            } catch (error) {
+                return error;
             }
-        } catch (error) {
-            console.log(error);
+        } else {
+            setErrors(validationErrors)
         }
     }
 
@@ -107,15 +118,15 @@ function UpdateGroupForm() {
     }
     if (group) return (
         <form
-        className='Update-group-form'
+        className='Create-group-form'
         onSubmit={onSubmit}
         >
-            <div className='Update-group-form-wrapper'>
-                <div className='Update-group-form-title'>
+            <div className='Create-group-form-wrapper'>
+                <div className='Create-group-form-title'>
                     <h2>Update your Group</h2>
                 </div>
                 <div className='Section'>
-                    <div className='Update-group-form-location'>
+                    <div className='Create-group-form-location'>
                         <h3>First, set your group's location.</h3>
                         <p>Meetup groups meet locally, in person and online. We'll connect you with people
                             in your area, and more can join you online.</p>
@@ -125,11 +136,11 @@ function UpdateGroupForm() {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
-                        <p className='errors.location'>{errors.location}</p>
+                        {errors.location && <p className='errors'>{errors.location}</p>}
                     </div>
                 </div>
                 <div className='Section'>
-                    <div className='Update-group-form-name'>
+                    <div className='Create-group-form-name'>
                         <h3>What will your group's name be?</h3>
                         <p>Choose a name that will give people a clear idea of what the group is about.
                             Feel free to get creative! You can edit this later if you change your mind.
@@ -140,11 +151,11 @@ function UpdateGroupForm() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <p className='errors.name'>{errors.name}</p>
+                        {errors.name && <p className='errors'>{errors.name}</p>}
                     </div>
                 </div>
                 <div className='Section'>
-                    <div className='Update-group-form-description'>
+                    <div className='Create-group-form-description'>
                         <h3>Now describe what your group will be about</h3>
                         <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
                         <ol>
@@ -158,13 +169,13 @@ function UpdateGroupForm() {
                             value={about}
                             onChange={(e) => setAbout(e.target.value)}
                             />
-                        <p className='errors.about'>{errors.about}</p>
+                        {errors.about && <p className='errors'>{errors.about}</p>}
                     </div>
                 </div>
                 <div className='Section'>
-                    <div className='Update-group-form-selects-flex'>
+                    <div className='Create-group-form-selects-flex'>
                         <h3>Final steps...</h3>
-                        <div className='Update-group-form-selects'>
+                        <div className='Create-group-form-selects'>
                             <label>
                                 Is this an in person group or online?
                                 <select
@@ -176,6 +187,7 @@ function UpdateGroupForm() {
                                     <option value={"In person"}>In Person</option>
                                     <option value={"Online"}>Online</option>
                                 </select>
+                                {errors.type && <p className='errors'>{errors.type}</p>}
                             </label>
                             <label>
                                 Is this group private or public?
@@ -188,6 +200,7 @@ function UpdateGroupForm() {
                                     <option value={true}>Private</option>
                                     <option value={false}>Public</option>
                                 </select>
+                                {errors.privacy && <p className='errors'>{errors.privacy}</p>}
                             </label>
                             <label>
                                 Please add an image URL for your group below.
@@ -197,15 +210,13 @@ function UpdateGroupForm() {
                                     onChange={(e) => setImageUrl(e.target.value)}
                                 />
                             </label>
-                            <p className='errors.type'>{errors.type}</p>
-                            <p className='errors.privacy'>{errors.privacy}</p>
-                            <p className='errors.image'>{errors.image}</p>
+                            {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
                         </div>
                     </div>
                 </div>
-                <button
+                <button className='Submit-button'
                 type='submit'
-                >Update Group</button>
+                >Create Group</button>
             </div>
         </form>
     )

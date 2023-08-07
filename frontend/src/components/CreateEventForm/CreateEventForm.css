@@ -1,0 +1,55 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.Section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 2px solid gray;
+    height: 100%;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px;
+}
+
+div.Create-event-form-name {
+    width: 100%;
+}
+
+div.Section > div.Create-event-form-name input {
+    width: 100%
+}
+
+div.Create-event-form-image {
+    width: 100%;
+}
+
+div.Section > div.Create-event-form-image input {
+    width: 100%;
+}
+
+div.Create-event-form-description {
+    width: 100%;
+    height: 100%;
+}
+
+div.Section > div.Create-event-form-description textarea {
+    height: 150px;
+    width: 400px;
+}
+
+button.Submit-button {
+    margin: 14px 0;
+    padding: 8px;
+    font-size: 18px;
+    color: white;
+    background-color: red;
+    box-shadow: 2px 2px black;
+}

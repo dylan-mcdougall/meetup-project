@@ -1,0 +1,68 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.Section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 2px solid gray;
+    height: 100%;
+    width: 100%;
+    padding: 18px;
+}
+
+div.Create-group-form-name {
+    width: 100%;
+}
+
+div.Create-group-form-name input {
+    width: 80%;
+}
+
+div.Create-group-form-selects-flex {
+    width: 100%;
+}
+
+form.Create-group-form input {
+    margin: 18px 0 8px;
+}
+
+div.Section h3 {
+    margin: 0 0 10px;
+    width: 100%;
+}
+
+div.Create-group-form-select {
+    width: 100%;
+}
+
+div.Create-group-form-select h3 {
+    margin: 0;
+    padding: 0;
+}
+
+form.Create-group-form label {
+    padding: 12px 0 8px;
+}
+
+form.Create-group-form label > select {
+    margin: 8px 0 0 0;
+}
+
+div.Create-group-form-description textarea {
+    margin: 12px 0 8px;
+    height: 150px;
+    width: 400px;
+}
+
+label.Create-group-form-image {
+    width: 100%;
+}
+
+
+label.Create-group-form-image input {
+    width: 100%;
+}

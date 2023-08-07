@@ -32,6 +32,17 @@ module.exports = {
         price: 10.00,
         startDate: '2023-12-12 20:00:00',
         endDate: '2023-12-13 21:00:00'
+      },
+      {
+        groupId: 1,
+        venueId: 1,
+        name: 'Tennis Group beepboop',
+        description: "First meet and greet event for the evening tennis on the water group!",
+        type: 'Online',
+        capacity: 10,
+        price: 18.50,
+        startDate: "2022-11-19 20:00:00",
+        endDate: "2022-11-20 22:00:00"
       }
     ], {});
   },

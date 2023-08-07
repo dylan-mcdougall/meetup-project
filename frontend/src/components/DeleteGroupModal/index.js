@@ -19,12 +19,12 @@ function DeleteGroupModal({ groupId }) {
     }
 
     return (
-        <>
+        <div className='Delete-modal'>
         <h2>Confirm Delete</h2>
         <p>Are you sure you want to remove this group?</p>
-        <button onClick={handleClick}>Yes (Delete Group)</button>
-        <button onClick={closeModal}>No (Keep Group)</button>
-        </>
+        <button className='Delete-yes' onClick={handleClick}>Yes (Delete Group)</button>
+        <button className='Delete-no' onClick={closeModal}>No (Keep Group)</button>
+        </div>
     )
 }
 

@@ -1,0 +1,23 @@
+div.Delete-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+
+div.Delete-modal > button {
+    font-size: 18px;
+    padding: 8px;
+    width: 100%;
+}
+
+button.Delete-yes {
+    color: white;
+    background-color: red;
+}
+
+button.Delete-no {
+    color: white;
+    background-color: darkslategrey;
+}

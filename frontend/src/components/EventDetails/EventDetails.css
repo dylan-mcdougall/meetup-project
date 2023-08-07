@@ -1,0 +1,152 @@
+div#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+div.Event-page-wrapper {
+    padding: 36px 72px;
+    display: flex;
+    flex-direction: column;
+}
+
+div.Event-header {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    padding-bottom: 24px;
+    gap: 8px;
+}
+
+div.Event-header > h2 {
+    font-size: 36pt;
+}
+
+div.Event-header > h4 {
+    font-size: 24pt;
+    font-weight: lighter;
+}
+
+div.Event-page-wrapper-flex {
+    margin-bottom: 48px;
+    padding: 12px 72px 36px;
+    display: flex;
+    flex-direction: column;
+    background-color: lightgrey;
+    flex: 1;
+}
+
+div.Event-highlights {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+div.Event-highlights > img {
+    max-width: 500px;
+    height: auto;
+}
+
+div.Event-Group-details {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    border-radius: 18px;
+    padding: 12px;
+}
+
+div.Event-Group-details > a {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    text-decoration: none;
+    gap: 18px;
+    word-wrap: normal;
+}
+
+div.Event-Group-details > a > img {
+    max-width: 100px;
+    height: auto;
+}
+
+div.Event-Group-details-text {
+    display: flex;
+    flex-direction: column;
+}
+
+div.Event-infocard-flex {
+    background-color: white;
+    border-radius: 18px;
+    padding: 12px;
+    margin-top: 24px;
+}
+
+div.Event-infocard-time {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+div.Event-infocard-time svg {
+    align-self: center;
+}
+
+div.start-time {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+div.end-time {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+}
+
+div.Event-infocard-price {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 12px 0 12px;
+}
+
+div.Event-infocard-price svg {
+    align-self: center;
+}
+
+div.Event-infocard-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.Event-infocard-type-flex {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 0 0 4px;
+}
+
+div.hostFunctionality {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+div.hostFunctionality button {
+    background-color: darkgrey;
+    font-size: 14px;
+}
+
+div.Event-details-section {
+    padding: 24px;
+}
+
+div.Event-details-section p {
+    padding-top: 18px;
+}
