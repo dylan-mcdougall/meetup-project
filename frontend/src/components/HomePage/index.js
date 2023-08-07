@@ -1,11 +1,23 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import OpenModalButton from "../OpenModalButton";
+import SignupFormModal from "../SignupFormModal";
 import './HomePage.css';
 
 function HomePage() {
     const sessionUser = useSelector(state => state.session.user);
 
     const h3ClassName = 'Section-3-title-3' + (sessionUser ? "" : ' unauthorized');
+
+    let selectiveJoin;
+    if (!sessionUser) {
+        selectiveJoin = (<OpenModalButton
+            buttonText="Join Meetup"
+            modalComponent={<SignupFormModal />}
+        />)
+    } else {
+        selectiveJoin = null;
+    }
 
     return (
         <div className="Landing-wrapper">
@@ -46,7 +58,7 @@ function HomePage() {
                 </div>
             </div>
             <div className="Section-4">
-                <button className="Section-4-button">Join Meetup</button>
+                {selectiveJoin}
             </div>
         </div>
     )
