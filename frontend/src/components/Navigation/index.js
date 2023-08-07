@@ -23,6 +23,7 @@ function Navigation({ isLoaded }){
   } else {
     sessionLinks = (
       <li className='session'>
+        <NavLink to='/events'>View Events</NavLink>
         <NavLink to='/groups'>View Groups</NavLink>
         <OpenModalButton
         buttonText="Log In"

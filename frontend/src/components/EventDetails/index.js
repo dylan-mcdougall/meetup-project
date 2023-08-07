@@ -58,7 +58,12 @@ function EventDetails() {
     }
 
     const eventPrice = (price) => {
-        if (price > 0) {
+        if (typeof price === "string") {
+            price = parseFloat(price);
+        }
+    
+        if (typeof price === "number" && price > 0) {
+            console.log(price);
             return `$${price.toFixed(2)}`;
         } else {
             return "FREE";
