@@ -72,7 +72,7 @@ function EventDetails() {
 
     useEffect(() => {
         dispatch(fetchEventDetails(eventId));
-    }, [dispatch, eventId]);
+    }, [dispatch]);
 
     useEffect(() => {
         if (event && event.groupId) {
@@ -109,7 +109,7 @@ function EventDetails() {
             </div>
             <div className='Event-page-wrapper-flex'>
                 <div className='Event-highlights'>
-                    <img src={previewImage ? previewImage.url : null}>
+                    <img src={event && previewImage ? previewImage.url : null}>
                     </img>
                     <div className='Event-highlight-details'>
                         <div className='Event-Group-details'>

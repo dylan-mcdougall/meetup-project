@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { dateTimeAmPm } from '../../helperFunctions/Helper';
 import { fetchGroupDetails } from '../../store/group';
-import { createEventAction } from '../../store/event';
+import { createEventAction, uploadEventImage } from '../../store/event';
 import './CreateEventForm.css';
 
 function CreateEventForm() {
@@ -51,10 +51,6 @@ function CreateEventForm() {
             errors.endDate = "End Date and time is required."
         }
 
-        if (!imageUrl) {
-            errors.imageUrl = "Please include a valid image URL."
-        }
-
         if (imageUrl) {
             const testUrl = imageUrl.split('.');
             if (testUrl[testUrl.length - 1] !== 'jpg' && testUrl[testUrl.length - 1] !== 'png' && testUrl[testUrl.length - 1] !== 'jpeg') {
@@ -87,7 +83,12 @@ function CreateEventForm() {
                 description: description
             }));
             if (res) {
-                console.log(res);
+                if (imageUrl) {
+                    await dispatch(uploadEventImage(res.id, {
+                        url: imageUrl,
+                        preview: true,
+                    }));
+                }
                 history.push(`/events/${res.id}`)
             }
         } catch (error) {

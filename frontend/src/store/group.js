@@ -34,9 +34,8 @@ export const createGroup = (group) => ({
     group,
 })
 
-export const createGroupImage = (groupId, image) => ({
+export const createGroupImage = (image) => ({
     type: CREATE_GROUP_IMAGE,
-    groupId,
     image,
 })
 

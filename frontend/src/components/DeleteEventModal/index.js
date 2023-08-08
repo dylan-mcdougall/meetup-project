@@ -11,11 +11,11 @@ function DeleteEventModal({ groupId, eventId }) {
     const { closeModal } = useModal();
     const history = useHistory();
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
-        return dispatch(deleteEventAction(eventId))
+        await dispatch(deleteEventAction(eventId))
         .then(closeModal)
-        .then(history.push(`/groups/${groupId}`))
+        .then(history.push(`/groups/${groupId}`));
     }
 
     return (

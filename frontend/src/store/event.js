@@ -6,6 +6,8 @@ const UPDATE_EVENT = 'events/UPDATE_EVENT';
 const REMOVE_EVENT = 'events/REMOVE_EVENT';
 const CREATE_EVENT = 'events/CREATE_EVENT';
 
+const CREATE_EVENT_IMAGE = 'events/CREATE_EVENT_IMAGE';
+
 export const loadEvents = (events) => ({
     type: LOAD_EVENTS,
     events,
@@ -29,6 +31,11 @@ export const removeEvent = (eventId) => ({
 export const createEvent = (event) => ({
     type: CREATE_EVENT,
     event,
+})
+
+export const createEventImage = (image) => ({
+    type: CREATE_EVENT_IMAGE,
+    image,
 })
 
 export const fetchEvents = () => async (dispatch) => {
@@ -92,6 +99,24 @@ export const deleteEventAction = (eventId) => async (dispatch) => {
     }
 };
 
+export const uploadEventImage = (eventId, image) => async (dispatch) => {
+    const res = await csrfFetch(`/api/events/${eventId}/images`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(image)
+    });
+    if (res.ok) {
+        const imageDetails = await res.json();
+        dispatch(createEventImage(imageDetails));
+        return imageDetails;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
 const eventsReducer = (state = {}, action) => {
     switch (action.type) {
         case LOAD_EVENTS:
@@ -108,6 +133,8 @@ const eventsReducer = (state = {}, action) => {
             const newState = { ...state };
             delete newState[action.eventId];
             return newState;
+        case CREATE_EVENT_IMAGE:
+            return { ...state };
         default:
             return state;
     }

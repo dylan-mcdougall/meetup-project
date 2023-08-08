@@ -245,7 +245,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
             message: "Forbidden"
         });
     } else {
-        const { url, preview } = req.body;
+        let { url, preview } = req.body;
         if (preview === 'true') preview = true;
         else if (preview === 'false') preview = false;
 
@@ -325,6 +325,8 @@ router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) =
 
 router.delete('/:eventId', requireAuth, async (req, res ,next) => {
     const currEvent = await Event.findByPk(req.params.eventId);
+    console.log(currEvent);
+
     if (!currEvent) {
         return res.status(404).json({
             message: "Event couldn't be found"
@@ -346,13 +348,19 @@ router.delete('/:eventId', requireAuth, async (req, res ,next) => {
         });
     }
 
-    await Event.destroy({
-        where: { id: req.params.eventId }
-    });
+    try {
+        await currEvent.destroy();
+        console.log(currEvent);
+        return res.json({
+            message: "Successfully deleted"
+        })
+    } catch {
+        console.error(error);
+        return res.status(500).json({ message: "Server error" });
+    }
+    
 
-    return res.json({
-        message: "Successfully deleted"
-    })
+    
 })
 
 router.get('/:eventId', async (req, res, next) => {
