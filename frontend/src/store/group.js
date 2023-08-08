@@ -34,11 +34,11 @@ export const createGroup = (group) => ({
     group,
 })
 
-// export const createGroupImage = (groupId, image) => ({
-//     type: CREATE_GROUP_IMAGE,
-//     groupId,
-//     image,
-// })
+export const createGroupImage = (groupId, image) => ({
+    type: CREATE_GROUP_IMAGE,
+    groupId,
+    image,
+})
 
 
 
@@ -137,24 +137,23 @@ export const deleteGroupAction = (groupId) => async (dispatch) => {
     }
 };
 
-// export const uploadGroupImage = (groupId, image) => async (dispatch) => {
-//     const res = await csrfFetch(`/api/groups/${groupId}/images`, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(image)
-//     });
-//     if (res.ok) {
-//         const imageDetails = await res.json();
-//         console.log(imageDetails);
-//         dispatch(createGroupImage(imageDetails));
-//         return imageDetails;
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const uploadGroupImage = (groupId, image) => async (dispatch) => {
+    const res = await csrfFetch(`/api/groups/${groupId}/images`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(image)
+    });
+    if (res.ok) {
+        const imageDetails = await res.json();
+        dispatch(createGroupImage(imageDetails));
+        return imageDetails;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
 
 
 const groupsReducer = (state = {}, action) => {

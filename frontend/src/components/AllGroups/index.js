@@ -11,7 +11,7 @@ function GroupPage() {
     
     useEffect(() => {
         dispatch(fetchGroups())
-    }, [dispatch]);
+    }, []);
 
     const groupPrivacy = (privacy) => {
         if (privacy) {

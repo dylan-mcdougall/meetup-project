@@ -485,9 +485,7 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
             message: 'Forbidden'
         })
     } else {
-        await Group.destroy({
-            where: { id: req.params.groupId }
-        });
+        await currGroup.destroy();
         return res.json({
             message: "Successfully deleted"
         })

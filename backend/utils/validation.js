@@ -59,8 +59,8 @@ const validateGroupBody = [
   body("about")
     .notEmpty()
     .isString()
-    .isLength({ min: 50 })
-    .withMessage("About must be 50 characters or more"),
+    .isLength({ min: 30 })
+    .withMessage("About must be 30 characters or more"),
   body('type')
     .notEmpty()
     .isString()

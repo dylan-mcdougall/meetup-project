@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { createGroupAction, fetchGroups } from '../../store/group';
+import { createGroupAction, fetchGroups, uploadGroupImage } from '../../store/group';
 import './CreateGroupForm.css';
 
 function CreateGroupForm() {
@@ -79,6 +79,12 @@ function CreateGroupForm() {
                     state: state
                 }));
                 if (res) {
+                    if (imageUrl) {
+                        await dispatch(uploadGroupImage(res.id, {
+                            url: imageUrl,
+                            preview: true,
+                        }));
+                    }
                     history.push(`/groups/${(res.id).toString()}`);
                 }
             } catch (error) {
