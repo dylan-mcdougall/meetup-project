@@ -1,5 +1,7 @@
 # `Meetup Clone`
 
+First coding project I completed.
+
 ## Database Schema Design
 
 ![image](https://github.com/dylan-mcdougall/meetup-project/assets/107007986/0e78039b-4dac-4856-9dbe-ba14cd49963a)
